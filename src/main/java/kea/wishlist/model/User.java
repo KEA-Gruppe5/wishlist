@@ -2,17 +2,37 @@ package kea.wishlist.model;
 
 public class User {
 
+    private int id;
     private String firstName;
     private String lastName;
-    private String name;
+    private String email;
+    private int age;
     private String password;
 
 
-    public User(String firstName, String lastName, String name, String password) {
+    public User(int id, String firstName, String lastName, String email, int age, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.name = name;
+        this.email = email;
+        this.age = age;
         this.password = password;
+    }
+
+    public User(String firstName, String lastName, String email, int age, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+        this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -31,12 +51,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -45,5 +65,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
