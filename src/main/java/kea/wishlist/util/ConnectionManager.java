@@ -25,7 +25,7 @@ public class ConnectionManager {
         this.PASSWORD = PASSWORD;
     }
 
-    private Connection getConnection(){
+    public Connection getConnection(){
         if (connection != null){
             return connection;
         }
