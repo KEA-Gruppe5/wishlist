@@ -1,11 +1,14 @@
 package kea.wishlist.model;
 
+import java.util.List;
+
 public class User {
 
     private String firstName;
     private String lastName;
     private String name;
     private String password;
+
 
 
     public User(String firstName, String lastName, String name, String password) {
