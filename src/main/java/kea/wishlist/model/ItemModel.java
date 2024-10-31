@@ -1,13 +1,13 @@
 package kea.wishlist.model;
 
-public class WishModel {
+public class ItemModel {
     private String name;
     private String description;
     private String url;
     private double price;
     private String imgUrl;
 
-    public WishModel(String name, String description, String url, double price, String imgUrl) {
+    public ItemModel(String name, String description, String url, double price, String imgUrl) {
         this.name = name;
         this.description = description;
         this.url = url;
@@ -15,7 +15,7 @@ public class WishModel {
         this.imgUrl = imgUrl;
     }
 
-    public WishModel(){}
+    public ItemModel(){}
 
     public String getName() {
         return name;
