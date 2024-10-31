@@ -1,4 +1,4 @@
 package kea.wishlist.service;
 
-public class WishService {
+public class ItemService {
 }
