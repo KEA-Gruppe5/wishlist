@@ -12,18 +12,27 @@ public class ConnectionManager {
 
     private static Connection connection;
 
-    private final String URL;
-    private final String USERNAME;
-    private final String PASSWORD;
+
+    @Value("${spring.datasource.url}")
+    private String URL;
+    @Value("${spring.datasource.username}")
+    private String USERNAME;
+    @Value("${spring.datasource.password}")
+    private String PASSWORD;
 
 
-    public ConnectionManager(@Value("${spring.datasource.url}") String URL,
-                             @Value("${spring.datasource.username}")String USERNAME,
-                             @Value("${spring.datasource.password}")String PASSWORD) {
-        this.URL = URL;
-        this.USERNAME = USERNAME;
-        this.PASSWORD = PASSWORD;
-    }
+//    private final String URL;
+//    private final String USERNAME;
+//    private final String PASSWORD;
+//
+//
+//    public ConnectionManager(@Value("${spring.datasource.url}") String URL,
+//                             @Value("${spring.datasource.username}")String USERNAME,
+//                             @Value("${spring.datasource.password}")String PASSWORD) {
+//        this.URL = URL;
+//        this.USERNAME = USERNAME;
+//        this.PASSWORD = PASSWORD;
+//    }
 
     public Connection getConnection(){
         if (connection != null){
