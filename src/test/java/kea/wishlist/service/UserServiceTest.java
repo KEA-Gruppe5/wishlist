@@ -15,8 +15,9 @@ class UserServiceTest {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @Test
-    public void testPasswordEncoder(){
+    void testPasswordEncoder(){
         System.out.println(passwordEncoder.encode("kea123"));
         System.out.println(passwordEncoder.matches("kea123",
                 "fRbmizSZuWZcVrJJnVwRkoxNfu+pZzGtUCRnw8uCfFo="));
