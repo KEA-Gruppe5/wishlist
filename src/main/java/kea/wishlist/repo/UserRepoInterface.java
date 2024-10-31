@@ -9,6 +9,4 @@ public interface UserRepoInterface {
     User updateUser(User user, int id);
     boolean deletedUser(int id) throws SQLException;
     User findUserWithId (int id);
-
-
 }

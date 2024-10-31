@@ -22,6 +22,6 @@ public class UserService {
 
     public User saveUser(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.saveUser(user);
+        return userRepository.addUser(user);
     }
 }
