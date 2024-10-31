@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Repository
-public class UserRepository {
+public class UserRepository implements UserRepoInterface{
     private final ConnectionManager connectionManager;
 
     @Autowired
@@ -21,7 +21,8 @@ public class UserRepository {
         this.connectionManager = connectionManager;
     }
 
-    public User saveUser(User user) throws SQLException {
+    @Override
+    public User addUser(User user) throws SQLException {
         try(Connection connection = connectionManager.getConnection()){
             String query = "INSERT INTO USERS (FIRSTNAME, LASTNAME, AGE, EMAIL, PASSWORD) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -42,4 +43,18 @@ public class UserRepository {
         return user;
     }
 
+    @Override
+    public User updateUser(User user, int id) {
+        return null;
+    }
+
+    @Override
+    public boolean deletedUser(int id) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public User findUserWithId(int id) {
+        return null;
+    }
 }
