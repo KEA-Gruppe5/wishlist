@@ -4,6 +4,7 @@ package kea.wishlist.repo;
 import kea.wishlist.model.User;
 import kea.wishlist.util.ConnectionManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 public class UserRepository {
     private final ConnectionManager connectionManager;
 
+    @Autowired
     public UserRepository(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }

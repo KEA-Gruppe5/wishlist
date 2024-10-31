@@ -1,9 +1,12 @@
 package kea.wishlist.util;
 
+import org.springframework.stereotype.Component;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+@Component
 public class PasswordEncoder {
 
     public String encode(String password){
