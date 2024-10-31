@@ -11,10 +11,10 @@ public class WishlistController  {
     private WishlistService wishlistService;
 
 
-    @GetMapping("/deleteWi")
-    @DeleteMapping("/deleteWishlist/{id}")
-    public boolean deleteWishlist(@RequestParam String id){
-        return wishlistService.deleteWishlist(id);
-    }
+//    @GetMapping("/deleteWi")
+//    @DeleteMapping("/deleteWishlist/{id}")
+//    public boolean deleteWishlist(@RequestParam String id){
+//        return wishlistService.deleteWishlist(id);
+//    }
 
 }
