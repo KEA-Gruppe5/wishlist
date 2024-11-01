@@ -1,13 +1,15 @@
 package kea.wishlist.repo;
 
-import kea.wishlist.model.ItemModel;
+import kea.wishlist.model.User;
+import kea.wishlist.model.WishModel;
+import kea.wishlist.model.WishlistModel;
 
 import java.sql.SQLException;
 
 public interface WishListRepoInterface {
 
-    ItemModel addWish(ItemModel Wish) throws SQLException;
-    ItemModel updateWish(ItemModel wish, int id);
-    ItemModel deletedWish(int id) throws SQLException;
-    ItemModel findWishWithId (int id);
+    WishlistModel addWishList(WishlistModel Wish) throws SQLException;
+    WishlistModel updateWishList(WishlistModel wish, int id);
+    WishlistModel deletedWishList(int id) throws SQLException;
+    WishlistModel findWishListWithId (int id);
 }
