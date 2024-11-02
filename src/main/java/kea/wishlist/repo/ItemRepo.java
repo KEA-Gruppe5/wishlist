@@ -24,7 +24,7 @@ public class ItemRepo implements ItemRepoInterface{
     public ItemModel addItem(ItemModel item) throws SQLException {
         String query = "INSERT INTO items (wishlistId, name, description, price, link, imgUrl) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, 1);
             preparedStatement.setString(2, item.getName());
