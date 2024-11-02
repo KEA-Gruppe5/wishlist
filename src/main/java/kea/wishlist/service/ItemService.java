@@ -1,7 +1,11 @@
 package kea.wishlist.service;
 
+import kea.wishlist.model.ItemModel;
+import kea.wishlist.model.User;
 import kea.wishlist.repo.ItemRepo;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 @Service
 public class ItemService {
@@ -18,5 +22,10 @@ public class ItemService {
         else {
             return "Could not find " + id;
         }
+    }
+
+    public void addItem(ItemModel item, User user) throws SQLException {
+        item.setWishlistId(user.getId());
+        itemRepo.addItem(item);
     }
 }
