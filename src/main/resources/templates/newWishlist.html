@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Wishlist</title>
+</head>
+<body>
+<h1>Create a Wishlist</h1>
+
+
+<form action="#" th:action="@{wishList/userId/save(userId=${1})}" th:object="${wishlist}" method="post">
+    <label for="name">Wishlist Name:</label>
+    <input type="text" id="name" th:field="*{name}" required/>
+
+    <button type="submit">Create Wishlist</button>
+</form>
+
+</body>
+</html>
+
+

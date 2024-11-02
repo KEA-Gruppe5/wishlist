@@ -1,6 +1,8 @@
 package kea.wishlist.repo;
 
 import kea.wishlist.model.WishlistModel;
+import kea.wishlist.util.ConnectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -8,13 +10,9 @@ import java.sql.*;
 
 @Repository("WishList_Repo")
 public class WishlistRepo implements WishListRepoInterface {
-    @Value("${spring.datasource.url}")
-    private String URL;
-    @Value("${spring.datasource.username}")
-    private String USERNAME;
-    @Value("${spring.datasource.password}")
-    private String PASSWORD;
 
+    @Autowired
+    private ConnectionManager connectionManager;
 
     //problem, need to assign
     @Override
@@ -22,25 +20,28 @@ public class WishlistRepo implements WishListRepoInterface {
         // SQL query with placeholders
         String insertQuery = "INSERT INTO WISHLISTS (userId, name) VALUES (?,?)";
 
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD); // Assumes you have a Database connection class
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             // Set the values in the prepared statement
-            preparedStatement.setInt(1, wish.getUserID());
+            preparedStatement.setInt(1, 1);
             preparedStatement.setString(2, wish.getName());
 
+
+            preparedStatement.executeUpdate();
             // Execute the update and check if successful
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating wishlist failed");
             }
-            // Retrieve the generated ID, if your table has auto-increment for id
+            // Retrieve the generated ID, bec table has auto-increment for id
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    wish.setUserID(generatedKeys.getInt(1));
+                    wish.setId(generatedKeys.getInt(1));
                 } else {
                     throw new SQLException("Creating wishlist failed, no ID obtained.");
                 }
             }
+
         }
         return wish;
     }

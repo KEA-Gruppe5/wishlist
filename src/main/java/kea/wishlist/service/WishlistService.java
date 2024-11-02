@@ -1,8 +1,11 @@
 package kea.wishlist.service;
 
+import kea.wishlist.model.WishlistModel;
 import kea.wishlist.repo.WishlistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 @Service
 public class WishlistService {
@@ -13,7 +16,7 @@ public class WishlistService {
     public WishlistService(WishlistRepo wishlistRepo) {
         this.wishlistRepo = wishlistRepo;
     }
-    public WishlistModel addWishlist(WishlistModel wishlist) throws SQLException {
-        return wishlistRepo.addWishList(wishlist);
+     public void addWishlist(WishlistModel wishlist) throws SQLException {
+         wishlistRepo.addWishList(wishlist);
     }
 }

@@ -1,10 +1,20 @@
 package kea.wishlist.model;
 
+
 public class WishlistModel {
     private int id;
-    private int userID;
+    private int userId;
     private String name;
 
+
+    //no arg constructor for spring to create an instance with requestBody
+    public WishlistModel() {
+    }
+
+    public WishlistModel(int userId, String name) {
+        this.userId = userId;
+        this.name = name;
+    }
 
     public int getId() {
         return id;
@@ -14,17 +24,13 @@ public class WishlistModel {
         this.id = id;
     }
 
-    public WishlistModel(int userID, String name) {
-        this.userID = userID;
-        this.name = name;
+
+    public int getUserId() {
+        return userId;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
