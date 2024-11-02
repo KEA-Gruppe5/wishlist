@@ -1,9 +1,18 @@
 package kea.wishlist.model;
 
 public class WishlistModel {
+    private int id;
     private int userID;
     private String name;
-    private User user;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public WishlistModel(int userID, String name) {
         this.userID = userID;

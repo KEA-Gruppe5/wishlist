@@ -18,9 +18,9 @@ public class WishlistRepo implements WishListRepoInterface {
 
     //problem, need to assign
     @Override
-    public WishlistModel addWishList(WishlistModel wish, ) throws SQLException {
+    public WishlistModel addWishList(WishlistModel wish) throws SQLException {
         // SQL query with placeholders
-        String insertQuery = "INSERT INTO WISHLISTS (name) VALUES (?)";
+        String insertQuery = "INSERT INTO WISHLISTS (userId, name) VALUES (?,?)";
 
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD); // Assumes you have a Database connection class
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {

@@ -1,7 +1,6 @@
 package kea.wishlist.repo;
 
 import kea.wishlist.model.User;
-import kea.wishlist.model.WishModel;
 import kea.wishlist.model.WishlistModel;
 
 import java.sql.SQLException;
