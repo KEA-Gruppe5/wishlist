@@ -13,8 +13,9 @@ import java.sql.SQLException;
 @RequestMapping("/wishList")
 public class WishlistController  {
 
-    @Autowired
+
     private final WishlistService wishlistService;
+
     @Autowired
     public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
@@ -42,8 +43,6 @@ public class WishlistController  {
         }
         return "redirect:/newWishlist"; // Return the view name
     }
-
-
 
 
 }
