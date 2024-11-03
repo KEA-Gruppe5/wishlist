@@ -22,24 +22,26 @@ public class ItemRepo implements ItemRepoInterface{
         this.connectionManager = connectionManager;
     }
 
-    public List<ItemModel> findAllItems() throws SQLException {
+    public List<ItemModel> findAllItems(int wishlistId) throws SQLException {
         try (Connection connection = connectionManager.getConnection()) {
             String query = "SELECT * FROM items WHERE wishlistId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,wishlistId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Map<Integer, ItemModel> map = new HashMap<>();
             while (resultSet.next()) {
-                int wishlistId = resultSet.getInt("wishlistId");
-                ItemModel itemModel = map.get(wishlistId);
+                int wishlIdResult = resultSet.getInt("wishlistId");
+                ItemModel itemModel = map.get(wishlIdResult);
                 if (itemModel == null) {
                     itemModel = new ItemModel();
-                    itemModel.setWishlistId(wishlistId);
+                    itemModel.setWishlistId(wishlIdResult);
                     itemModel.setName(resultSet.getString("name"));
                     itemModel.setDescription(resultSet.getString("description"));
                     itemModel.setPrice(resultSet.getDouble("price"));
-                    itemModel.setDescription(resultSet.getString("link"));
-                    itemModel.setDescription(resultSet.getString("imgUrl"));
-                    map.put(wishlistId, itemModel);
+                    itemModel.setUrl(resultSet.getString("link"));
+                    itemModel.setImgUrl(resultSet.getString("imgUrl"));
+                    itemModel.setWishlistId(wishlIdResult);
+                    map.put(wishlIdResult, itemModel);
                 }
                 itemModelList = new ArrayList<>(map.values());
             }
@@ -89,9 +91,8 @@ public class ItemRepo implements ItemRepoInterface{
     @Override
     public ItemModel showUpdateItemForm(int id) {
         for (ItemModel i : itemModelList){
-            if (i.getWishlistId() == id){
                 return i;
-            }
+
         }
         throw new NoSuchElementException("No item found for wishlist with id " + id);
     }

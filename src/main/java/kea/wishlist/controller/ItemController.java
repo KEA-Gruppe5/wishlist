@@ -18,22 +18,23 @@ import java.sql.SQLException;
 public class ItemController {
     @Autowired
     private ItemService itemService;
+
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
-    public String findAllItems(Model model) throws SQLException {
-        model.addAttribute("findAllItems", itemService.getAllItems());
+    @GetMapping("/{wishlistId}")
+    public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid) throws SQLException {
+        model.addAttribute("findAllItems", itemService.getAllItems(wishlistid));
         return "wishlist";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/create")
     public String showItemForm(Model model){
         model.addAttribute("showAddFormItem", new ItemModel());
         return "addItem";
     }
 
-    @PostMapping("/{wishlistId}/add")
+    @PostMapping("/{wishlistId}/create")
     public String addItem(@ModelAttribute ItemModel item, @PathVariable("wishlistId") String wishlistId, HttpSession session) throws SQLException {
         User currentUser = (User) session.getAttribute("userId");
         itemService.addItem(item, currentUser);
@@ -42,9 +43,9 @@ public class ItemController {
 
 
     @GetMapping("/{wishlistId}/update")
-    public String showUpdateItemForm(@PathVariable int wishlistId, Model model){
-        ItemModel items = itemService.showUpdateItemForm(wishlistId);
-         model.addAttribute("showUpdateItemForm", items );
+    public String showUpdateItemForm(@PathVariable("wishlistId") int wishlistId, Model model){
+            ItemModel items = itemService.showUpdateItemForm(wishlistId);
+            model.addAttribute("showUpdateItemForm", items );
          return "editItem";
     }
 

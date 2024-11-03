@@ -17,8 +17,8 @@ public class ItemService {
         this.itemRepo = itemRepo;
     }
 
-    public List<ItemModel> getAllItems() throws SQLException {
-        return itemRepo.findAllItems();
+    public List<ItemModel> getAllItems(int wishlistId) throws SQLException {
+        return itemRepo.findAllItems(wishlistId);
     }
 
     public String deleteItem(int id) {

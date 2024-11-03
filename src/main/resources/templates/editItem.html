@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Edit Item</h2>
+
+    <!-- Form for editing an item -->
+    <form th:action="@{/items/update}" th:object="${showUpdateItemForm}" method="post">
+        <input type="hidden" th:field="*{id}" /> //add id to item model, to get it from here so i can edit
+        <div class="form-group">
+            <label for="wishlistId">Wishlist ID:</label>
+            <input type="number" id="wishlistId" th:field="*{wishlistId}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" id="price" th:field="*{price}" class="form-control" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="link">Link:</label>
+            <input type="url" id="link" th:field="*{url}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="imgUrl">Image URL:</label>
+            <input type="url" id="imgUrl" th:field="*{imgUrl}" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Item</button>
+        <a href="#" th:href="@{/items}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

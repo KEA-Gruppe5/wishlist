@@ -34,9 +34,9 @@ public class ConnectionManager {
         this.PASSWORD = PASSWORD;
     }
 
-    public Connection getConnection(){
+    public Connection getConnection() throws SQLException {
         if (connection != null){
-            return connection;
+            return DriverManager.getConnection(URL,USERNAME,PASSWORD);
         }
         try {
             connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
