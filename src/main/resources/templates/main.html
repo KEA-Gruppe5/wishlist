@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Wishlists</title>
+</head>
+<body>
+
+<h1>Wishlist Retrieval Test</h1>
+
+<!-- Button to retrieve wishlists for user ID 1 -->
+<form action="/wishlists/1/wishList/main" method="get">
+    <button type="submit">Get Wishlists for User ID 1</button>
+</form>
+
+<!-- Section to display the wishlists -->
+<div th:if="${wishlists != null}">
+    <h2>Wishlists for User ID 1</h2>
+    <ul>
+        <li th:each="wishlist : ${wishlists}">
+            <span th:text="${wishlist.name}"></span> <!-- Display wishlist name -->
+        </li>
+    </ul>
+</div>
+
+
+
+
+</body>
+</html>
+

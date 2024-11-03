@@ -12,7 +12,6 @@ public class ConnectionManager {
 
     private static Connection connection;
 
-
 //    @Value("${spring.datasource.url}")
 //    private String URL;
 //    @Value("${spring.datasource.username}")
