@@ -22,7 +22,8 @@ public class ItemController {
     private UserService userService;
 
     @GetMapping("")
-    public String findAllItems(Model model){
+    public String findAllItems(Model model) throws SQLException {
+        model.addAttribute("findAllItems", itemService.getAllItems());
         return "wishlist";
     }
 
