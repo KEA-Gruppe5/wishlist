@@ -1,9 +1,7 @@
 package kea.wishlist.model;
-
 import java.util.List;
 
 public class User {
-
     private int id;
     private String firstName;
     private String lastName;
