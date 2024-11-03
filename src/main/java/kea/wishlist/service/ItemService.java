@@ -24,6 +24,10 @@ public class ItemService {
         }
     }
 
+    public ItemModel showUpdateItemForm(int wishlistId){
+        return itemRepo.showUpdateItemForm(wishlistId);
+    }
+
     public void addItem(ItemModel item, User user) throws SQLException {
         item.setWishlistId(user.getId());
         itemRepo.addItem(item);

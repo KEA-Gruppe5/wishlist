@@ -27,19 +27,19 @@ public class ItemController {
         return "addItem";
     }
 
-    @PostMapping("{userId}/add")
-    public String addItem(@ModelAttribute ItemModel item, @PathVariable("userId") String userId, HttpSession session) throws SQLException {
+    @PostMapping("{wishlistId}/add")
+    public String addItem(@ModelAttribute ItemModel item, @PathVariable("wishlistId") String wishlistId, HttpSession session) throws SQLException {
         User currentUser = (User) session.getAttribute("userId");
         itemService.addItem(item, currentUser);
         return "redirect:/wishlist";
     }
 
 
-//    @GetMapping("/update/{id}")
-//    public String showUpdateItemForm(@PathVariable int id, Model model){
-//         itemService.showUpdateItemForm(id);
-//         model.addAttribute("showUpdateItemForm", )
-//    }
+    @GetMapping("{wishlistId}/update")
+    public String showUpdateItemForm(@PathVariable int wishlistId, Model model){
+        ItemModel items = itemService.showUpdateItemForm(wishlistId);
+         model.addAttribute("showUpdateItemForm", items );
+    }
 
     @PostMapping("/delete/{id}")
     public String deleteItem(@PathVariable int id) throws SQLException {
