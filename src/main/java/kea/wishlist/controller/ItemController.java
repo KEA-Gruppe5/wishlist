@@ -21,13 +21,18 @@ public class ItemController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("")
+    public String findAllItems(Model model){
+        return "wishlist";
+    }
+
     @GetMapping("/add")
     public String showItemForm(Model model){
         model.addAttribute("showAddFormItem", new ItemModel());
         return "addItem";
     }
 
-    @PostMapping("{wishlistId}/add")
+    @PostMapping("/{wishlistId}/add")
     public String addItem(@ModelAttribute ItemModel item, @PathVariable("wishlistId") String wishlistId, HttpSession session) throws SQLException {
         User currentUser = (User) session.getAttribute("userId");
         itemService.addItem(item, currentUser);
@@ -35,11 +40,17 @@ public class ItemController {
     }
 
 
-    @GetMapping("{wishlistId}/update")
+    @GetMapping("/{wishlistId}/update")
     public String showUpdateItemForm(@PathVariable int wishlistId, Model model){
         ItemModel items = itemService.showUpdateItemForm(wishlistId);
          model.addAttribute("showUpdateItemForm", items );
          return "editItem";
+    }
+
+    @PostMapping("/update")
+    public String updateItem(@RequestParam("id") int id, @ModelAttribute ItemModel itemModel){
+        itemService.updateItem(itemModel,id);
+        return "redirect:/wishlist";
     }
 
     @PostMapping("/delete/{id}")
