@@ -39,6 +39,7 @@ public class ItemController {
     public String showUpdateItemForm(@PathVariable int wishlistId, Model model){
         ItemModel items = itemService.showUpdateItemForm(wishlistId);
          model.addAttribute("showUpdateItemForm", items );
+         return "editItem";
     }
 
     @PostMapping("/delete/{id}")
