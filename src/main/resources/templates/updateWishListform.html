@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Wishlist</title>
+</head>
+<body>
+
+<h1>Edit Wishlist</h1>
+<form action="@{/wishlist/{id}(id=${wishlist.id})}" method="post" th:action="@{/wishlist/{id}(id=${wishlist.id})}">
+    <label for="name">Wishlist Name:</label>
+    <input type="text" id="name" name="name" th:value="${wishlist.name}" required/>
+
+    <button type="submit">Update Wishlist</button>
+</form>
+<a href="/wishlists">Cancel</a> <!-- Link to go back to the list of wishlists -->
+</body>
+</html>
