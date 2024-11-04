@@ -36,7 +36,7 @@ public class ItemController {
 
     @PostMapping("/{wishlistId}/create")
     public String addItem(@ModelAttribute ItemModel item, @PathVariable("wishlistId") String wishlistId, HttpSession session) throws SQLException {
-        User currentUser = (User) session.getAttribute("userId");
+        User currentUser = (User) session.getAttribute("wishlistId");
         itemService.addItem(item, currentUser);
         return "redirect:/wishlist";
     }
@@ -55,10 +55,10 @@ public class ItemController {
         return "redirect:/wishlist";
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteItem(@PathVariable int id) throws SQLException {
-        itemService.deleteItem(id);
-        System.out.println(id);
+    @PostMapping("/delete/{itemId}")
+    public String deleteItem(@PathVariable int itemId) throws SQLException {
+        itemService.deleteItem(itemId);
+        System.out.println(itemId);
         return "redirect:/wishlist";
     }
 }

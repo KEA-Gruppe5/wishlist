@@ -2,6 +2,7 @@ package kea.wishlist.repo;
 
 import kea.wishlist.model.ItemModel;
 import kea.wishlist.model.User;
+import kea.wishlist.service.UserService;
 import kea.wishlist.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,8 @@ public class ItemRepo implements ItemRepoInterface{
     private final ConnectionManager connectionManager;
 
     private List<ItemModel> itemModelList = new ArrayList<>();
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public ItemRepo(ConnectionManager connectionManager) {
@@ -56,7 +59,7 @@ public class ItemRepo implements ItemRepoInterface{
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, item.getWishlistId()); //get wishlistId
+            preparedStatement.setInt(1, item.getWishlistId());
             preparedStatement.setString(2, item.getName());
             preparedStatement.setString(3, item.getDescription());
             preparedStatement.setDouble(4, item.getPrice());

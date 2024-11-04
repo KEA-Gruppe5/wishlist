@@ -16,7 +16,7 @@
 <div class="form-container">
     <h1>Add New Item to Your Wishlist</h1>
 
-    <form th:object="${showAddFormItem}" th:action="@{/item/{userId}/add(userId=${1})}" method="post">
+    <form th:object="${showAddFormItem}" th:action="@{/item/{wishlistId}/create(wishlistId=${showAddFormItem.getWishlistId()})}" method="post">
 
         <label for="name">Enter Attraction Name</label>
         <input type="text" id="id" th:field="*{wishlistId}" placeholder="Attraction Name">
