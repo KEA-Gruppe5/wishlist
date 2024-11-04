@@ -4,6 +4,8 @@ package kea.wishlist.repo;
 import kea.wishlist.model.User;
 import kea.wishlist.util.ConnectionManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,7 @@ import java.sql.*;
 @Repository
 public class UserRepository implements UserRepoInterface{
     private final ConnectionManager connectionManager;
+    private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     @Autowired
     public UserRepository(ConnectionManager connectionManager) {
@@ -37,6 +40,7 @@ public class UserRepository implements UserRepoInterface{
                 }
             }
         }
+        logger.info("add new user: " + user);
         return user;
     }
 
