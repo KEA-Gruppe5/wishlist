@@ -22,29 +22,26 @@ public class ItemRepo implements ItemRepoInterface{
     }
 
     public List<ItemModel> findAllItems(int wishlistId) throws SQLException {
+        List<ItemModel> tempItems = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
             String query = "SELECT * FROM items WHERE wishlistId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1,wishlistId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Map<Integer, ItemModel> map = new HashMap<>();
             while (resultSet.next()) {
-                int wishlIdResult = resultSet.getInt("wishlistId");
-                ItemModel itemModel = map.get(wishlIdResult);
-                if (itemModel == null) {
-                    itemModel = new ItemModel();
-                    itemModel.setWishlistId(wishlIdResult);
-                    itemModel.setName(resultSet.getString("name"));
-                    itemModel.setDescription(resultSet.getString("description"));
-                    itemModel.setPrice(resultSet.getDouble("price"));
-                    itemModel.setUrl(resultSet.getString("link"));
-                    itemModel.setImgUrl(resultSet.getString("imgUrl"));
-                    itemModel.setWishlistId(wishlIdResult);
-                    map.put(wishlIdResult, itemModel);
-                }
-                itemModelList = new ArrayList<>(map.values());
+                ItemModel itemModel = new ItemModel();
+                itemModel.setWishlistId(resultSet.getInt("wishlistId"));
+                itemModel.setName(resultSet.getString("name"));
+                itemModel.setDescription(resultSet.getString("description"));
+                itemModel.setPrice(resultSet.getDouble("price"));
+                itemModel.setUrl(resultSet.getString("link"));
+                itemModel.setImgUrl(resultSet.getString("imgUrl"));
+
+                tempItems.add(itemModel);
             }
-            return itemModelList;
+            return tempItems;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

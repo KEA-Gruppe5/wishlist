@@ -34,15 +34,6 @@ public class ConnectionManager {
     }
 
     public Connection getConnection() throws SQLException {
-        if (connection != null){
-            return DriverManager.getConnection(URL,USERNAME,PASSWORD);
-        }
-        try {
-            connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("Could not connect to DB");
-            throw new RuntimeException(e);
-        }
-        return connection;
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 }

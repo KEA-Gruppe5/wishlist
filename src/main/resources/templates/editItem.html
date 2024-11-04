@@ -12,7 +12,7 @@
 
     <!-- Form for editing an item -->
     <form th:action="@{/items/update}" th:object="${showUpdateItemForm}" method="post">
-        <input type="hidden" th:field="*{id}" /> //add id to item model, to get it from here so i can edit
+        <input type="hidden" th:field="*{id}" />
         <div class="form-group">
             <label for="wishlistId">Wishlist ID:</label>
             <input type="number" id="wishlistId" th:field="*{wishlistId}" class="form-control" required>
