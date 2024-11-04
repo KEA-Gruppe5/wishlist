@@ -18,7 +18,6 @@ public class WishlistController {
 
 
     private final WishlistService wishlistService;
-
     @Autowired
     public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
@@ -34,14 +33,14 @@ public class WishlistController {
     @PostMapping("/{userId}/save")
     public String createWishlist(@PathVariable int userId, @ModelAttribute WishlistModel wishlist, Model model) {
         try {
-            wishlist.setUserId(userId); // Set the user ID in the wishlist
-            // Call the service to save the wishlist
+            wishlist.setUserId(userId);
             wishlistService.addWishlist(wishlist);
             model.addAttribute("message", "Wishlist created successfully with ID: " + wishlist.getId());
         } catch (SQLException e) {
             model.addAttribute("message", "Error creating wishlist: " + e.getMessage());
         }
-        return "redirect:/newWishlist"; // Return the view name
+        return "redirect:/wishList/1/main";
+
     }
     @DeleteMapping("/{id}/delete")
     public String deleteWishList(@PathVariable int id) throws SQLException {
@@ -52,7 +51,7 @@ public class WishlistController {
     public String updateForm(@PathVariable int id, Model model) throws SQLException {
         WishlistModel wishlist = wishlistService.oneListWithID(id);
         if (wishlist == null){
-            return "redirect/error";
+            return "redirect:/error";
         }
         model.addAttribute("wishlist", wishlist);
         return "updateWishListform";
@@ -72,22 +71,26 @@ public class WishlistController {
     public String getWishlistsByUserId(@PathVariable int userId, Model model) {
         try {
             List<WishlistModel> wishlists = wishlistService.getWishlistsByUserId(userId);
+
+            System.out.println("Wishlists for user " + userId + ": " + wishlists);
+
+
             model.addAttribute("wishlists", wishlists);
+            model.addAttribute("userId", userId);
             if (wishlists.isEmpty()) {
                 model.addAttribute("message", "No wishlists found for this user.");
             }
             return "main";
 
         } catch (SQLException e) {
-            model.addAttribute("error", "An error occurred while fetching the wishlists.");
-            return "error";
+            // Add a log statement here to confirm the catch block is reached
+            System.out.println("Error occurred in getWishlistsByUserId");
+            e.printStackTrace();  // This will print the exact error details in the console
+
+            model.addAttribute("error", "An error occurred while fetching the wishlists: " + e.getMessage());
+            return "error";  // Return the error page if an exception occurs
         }
-    }
-    @GetMapping("/main")
-    public String showMain(){
-        return "main";
-    }
 
-
+    }
 
 }

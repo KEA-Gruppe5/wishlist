@@ -1,5 +1,4 @@
 package kea.wishlist.repo;
-
 import kea.wishlist.model.WishlistModel;
 import kea.wishlist.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class WishlistRepo implements WishListRepoInterface {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             // Set the values in the prepared statement
-            preparedStatement.setInt(1, wish.getId());
+            preparedStatement.setInt(1, wish.getUserId());
             preparedStatement.setString(2, wish.getName());
 
             // Execute the update and check if successful
@@ -142,9 +141,6 @@ public class WishlistRepo implements WishListRepoInterface {
             }
         }
     }
-
-
-
 
 
 }
