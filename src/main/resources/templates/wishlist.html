@@ -28,9 +28,8 @@
                     <p class="card-text"><strong>Price:</strong> $<span th:text="${item.price}">0.00</span></p>
                     <a th:href="${item.url}" class="btn btn-primary">View Item</a>
                     <div class="mt-3">
-                        <!-- Edit and Delete buttons -->
-                        <a th:href="@{'/item/' + ${item.getWishlistId()} + '/update'}" class="btn btn-warning">Edit</a>
-                        <form th:action="@{'/item/delete/' + ${item.getWishlistId()}}" method="post" th:object="${item.getWishlistId()}" style="display:inline;">
+                        <a th:href="@{'/item/' + 'update/' +  ${item.getId()}}" class="btn btn-warning">Edit</a>
+                        <form th:action="@{'/item/delete/' + ${item.id} + '/' + ${item.wishlistId}}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>
@@ -40,7 +39,6 @@
     </div>
 </div>
 
-<!-- Bootstrap JS dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

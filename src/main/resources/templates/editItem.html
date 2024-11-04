@@ -11,12 +11,9 @@
     <h2>Edit Item</h2>
 
     <!-- Form for editing an item -->
-    <form th:action="@{/items/update}" th:object="${showUpdateItemForm}" method="post">
-        <input type="hidden" th:field="*{id}" />
-        <div class="form-group">
-            <label for="wishlistId">Wishlist ID:</label>
-            <input type="number" id="wishlistId" th:field="*{wishlistId}" class="form-control" required>
-        </div>
+    <form th:action="@{/item/update/{itemId}/{wishlistId}(itemId=${showUpdateItemForm.id}, wishlistId=${showUpdateItemForm.wishlistId})}"
+          th:object="${showUpdateItemForm}"
+          method="post">        <input type="hidden" th:field="*{id}" />
 
         <div class="form-group">
             <label for="name">Name:</label>
@@ -44,7 +41,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Update Item</button>
-        <a href="#" th:href="@{/items}" class="btn btn-secondary">Cancel</a>
+        <a href="#" th:href="@{'/item/' + ${showUpdateItemForm.getWishlistId()}}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 
