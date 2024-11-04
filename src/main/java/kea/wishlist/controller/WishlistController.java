@@ -51,7 +51,7 @@ public class WishlistController {
     public String updateForm(@PathVariable int id, Model model) throws SQLException {
         WishlistModel wishlist = wishlistService.oneListWithID(id);
         if (wishlist == null){
-            return "redirect/error";
+            return "redirect:/error";
         }
         model.addAttribute("wishlist", wishlist);
         return "updateWishListform";
@@ -71,6 +71,10 @@ public class WishlistController {
     public String getWishlistsByUserId(@PathVariable int userId, Model model) {
         try {
             List<WishlistModel> wishlists = wishlistService.getWishlistsByUserId(userId);
+
+            System.out.println("Wishlists for user " + userId + ": " + wishlists);
+
+
             model.addAttribute("wishlists", wishlists);
             model.addAttribute("userId", userId);
             if (wishlists.isEmpty()) {
@@ -79,9 +83,14 @@ public class WishlistController {
             return "main";
 
         } catch (SQLException e) {
-            model.addAttribute("error", "An error occurred while fetching the wishlists.");
-            return "error";
+            // Add a log statement here to confirm the catch block is reached
+            System.out.println("Error occurred in getWishlistsByUserId");
+            e.printStackTrace();  // This will print the exact error details in the console
+
+            model.addAttribute("error", "An error occurred while fetching the wishlists: " + e.getMessage());
+            return "error";  // Return the error page if an exception occurs
         }
+
     }
 
 }
