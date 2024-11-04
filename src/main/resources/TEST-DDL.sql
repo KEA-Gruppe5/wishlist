@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS Wishlist;
 SET SCHEMA Wishlist;
 
-CREATE TABLE  users (
+CREATE TABLE users (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         first_name VARCHAR(25),
                         last_name VARCHAR(255),
