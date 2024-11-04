@@ -26,18 +26,7 @@ public class ItemController {
     @Autowired
     private UserService userService;
 
-    //TODO fix so endpoint is /wishlist/id. Solution: add method to WishlistController
-    //TODO when login / user session is ready, ensure the logged in user can only access there own wishlist
-    @GetMapping("/{wishlistId}")
-    public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid) throws SQLException {
-        List<ItemModel> list = itemService.getAllItems(wishlistid);
-        if (list.isEmpty()){
-            model.addAttribute("error", "No wishlist found for the provided ID.");
-            return "error";
-        }
-        model.addAttribute("findAllItems", list);
-        return "wishlist";
-    }
+    //View items is moved to wishlistController for correct endpoint
 
     @GetMapping("/{wishlistId}/addItem")
     public String showItemForm(@PathVariable("wishlistId") String wishlistId, Model model){

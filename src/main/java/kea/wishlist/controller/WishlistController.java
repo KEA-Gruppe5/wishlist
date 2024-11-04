@@ -1,7 +1,9 @@
 package kea.wishlist.controller;
 
+import kea.wishlist.model.ItemModel;
 import kea.wishlist.model.User;
 import kea.wishlist.model.WishlistModel;
+import kea.wishlist.service.ItemService;
 import kea.wishlist.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,16 +14,35 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/wishList")
+@RequestMapping("/wishlist")
 public class WishlistController {
 
-
-
     private final WishlistService wishlistService;
+
+    @Autowired
+    private ItemService itemService;
+
     @Autowired
     public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
     }
+
+    //MOVED BY KRISTOFFER, TO GET /wishlist endpoint
+    //TODO fix so endpoint is /wishlist/id. Solution: add method to WishlistController
+    //TODO when login / user session is ready, ensure the logged in user can only access there own wishlist
+    ///TODO change error msg to only show when the wishlist are NOT found at all
+    @GetMapping("/{wishlistId}")
+    public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid) throws SQLException {
+        List<ItemModel> list = itemService.getAllItems(wishlistid);
+//        if (list.isEmpty()){
+//            model.addAttribute("error", "No wishlist found for the provided ID.");
+//            return "error";
+//        }
+        model.addAttribute("findAllItems", list);
+        return "wishlist";
+    }
+
+
     @GetMapping("/{userId}/create")
     public String showCreateWishlistForm(@PathVariable int userId, Model model) {
         User user = new User();

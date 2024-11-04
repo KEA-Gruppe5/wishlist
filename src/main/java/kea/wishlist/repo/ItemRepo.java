@@ -24,14 +24,33 @@ public class ItemRepo implements ItemRepoInterface{
     public List<ItemModel> findAllItems(int wishlistId) throws SQLException {
             itemModelList.clear();
         try (Connection connection = connectionManager.getConnection()) {
-            String query = "SELECT * FROM items WHERE wishlistId = ?";
+
+            String query = "SELECT wishlists.id AS wishlistId, " + // Explicitly selecting as 'wishlistId'
+                    "wishlists.userId, " +
+                    "items.id, " +
+                    "items.name, " +
+                    "items.description, " +
+                    "items.price, " +
+                    "items.link, " +
+                    "items.imgUrl " +
+                    "FROM wishlists " +
+                    "JOIN items ON wishlists.id = items.wishlistId " +
+                    "WHERE wishlists.id = ?";
+
+
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1,wishlistId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 ItemModel itemModel = new ItemModel();
+                // Set wishlist-related details if needed (e.g., wishlistName)
+                int fetchedWishlistId = resultSet.getInt("wishlistId");
+                String wishlistName = resultSet.getString("name");
+                int userId = resultSet.getInt("userId");
+
+                // Populate the item model with data from the result set
                 itemModel.setId(resultSet.getInt("id"));
-                itemModel.setWishlistId(resultSet.getInt("wishlistId"));
+                itemModel.setWishlistId(fetchedWishlistId);
                 itemModel.setName(resultSet.getString("name"));
                 itemModel.setDescription(resultSet.getString("description"));
                 itemModel.setPrice(resultSet.getDouble("price"));
