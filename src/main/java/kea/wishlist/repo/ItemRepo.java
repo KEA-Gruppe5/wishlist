@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Repository
 public class ItemRepo implements ItemRepoInterface{
@@ -22,6 +20,36 @@ public class ItemRepo implements ItemRepoInterface{
     public ItemRepo(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
+
+    public List<ItemModel> findAllItems(int wishlistId) throws SQLException {
+        try (Connection connection = connectionManager.getConnection()) {
+            String query = "SELECT * FROM items WHERE wishlistId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,wishlistId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Map<Integer, ItemModel> map = new HashMap<>();
+            while (resultSet.next()) {
+                int wishlIdResult = resultSet.getInt("wishlistId");
+                ItemModel itemModel = map.get(wishlIdResult);
+                if (itemModel == null) {
+                    itemModel = new ItemModel();
+                    itemModel.setWishlistId(wishlIdResult);
+                    itemModel.setName(resultSet.getString("name"));
+                    itemModel.setDescription(resultSet.getString("description"));
+                    itemModel.setPrice(resultSet.getDouble("price"));
+                    itemModel.setUrl(resultSet.getString("link"));
+                    itemModel.setImgUrl(resultSet.getString("imgUrl"));
+                    itemModel.setWishlistId(wishlIdResult);
+                    map.put(wishlIdResult, itemModel);
+                }
+                itemModelList = new ArrayList<>(map.values());
+            }
+            return itemModelList;
+        }
+    }
+
+
+
 
     @Override
     public ItemModel addItem(ItemModel item) throws SQLException {
