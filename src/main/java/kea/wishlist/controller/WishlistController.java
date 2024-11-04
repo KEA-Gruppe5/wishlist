@@ -39,7 +39,8 @@ public class WishlistController {
         } catch (SQLException e) {
             model.addAttribute("message", "Error creating wishlist: " + e.getMessage());
         }
-        return "redirect:/wishList/" + userId + "/main";
+        return "redirect:/wishList/1/main";
+
     }
     @DeleteMapping("/{id}/delete")
     public String deleteWishList(@PathVariable int id) throws SQLException {
