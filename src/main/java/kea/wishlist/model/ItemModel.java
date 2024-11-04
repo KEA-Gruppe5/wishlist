@@ -1,6 +1,7 @@
 package kea.wishlist.model;
 
 public class ItemModel {
+    private int id;
     private int wishlistId;
     private String name;
     private String description;
@@ -8,7 +9,8 @@ public class ItemModel {
     private double price;
     private String imgUrl;
 
-    public ItemModel(int wishlistId, String name, String description, String url, double price, String imgUrl) {
+    public ItemModel(int id, int wishlistId, String name, String description, String url, double price, String imgUrl) {
+        this.id = id;
         this.wishlistId = wishlistId;
         this.name = name;
         this.description = description;
@@ -23,6 +25,14 @@ public class ItemModel {
 
     public void setWishlistId(int wishlistId) {
         this.wishlistId = wishlistId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public ItemModel(){}

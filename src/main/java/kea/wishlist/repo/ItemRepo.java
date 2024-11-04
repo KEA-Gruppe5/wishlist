@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Repository
 public class ItemRepo implements ItemRepoInterface{
@@ -23,13 +21,40 @@ public class ItemRepo implements ItemRepoInterface{
         this.connectionManager = connectionManager;
     }
 
+    public List<ItemModel> findAllItems(int wishlistId) throws SQLException {
+            itemModelList.clear();
+        try (Connection connection = connectionManager.getConnection()) {
+            String query = "SELECT * FROM items WHERE wishlistId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,wishlistId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ItemModel itemModel = new ItemModel();
+                itemModel.setId(resultSet.getInt("id"));
+                itemModel.setWishlistId(resultSet.getInt("wishlistId"));
+                itemModel.setName(resultSet.getString("name"));
+                itemModel.setDescription(resultSet.getString("description"));
+                itemModel.setPrice(resultSet.getDouble("price"));
+                itemModel.setUrl(resultSet.getString("link"));
+                itemModel.setImgUrl(resultSet.getString("imgUrl"));
+
+                itemModelList.add(itemModel);
+            }
+            return itemModelList;
+        }
+        }
+
+
+
+
+
     @Override
-    public ItemModel addItem(ItemModel item) throws SQLException {
+    public ItemModel addItem(ItemModel item, int wishlistId) throws SQLException {
         String query = "INSERT INTO items (wishlistId, name, description, price, link, imgUrl) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, item.getWishlistId()); //get wishlistId
+            preparedStatement.setInt(1, wishlistId);
             preparedStatement.setString(2, item.getName());
             preparedStatement.setString(3, item.getDescription());
             preparedStatement.setDouble(4, item.getPrice());
@@ -43,12 +68,28 @@ public class ItemRepo implements ItemRepoInterface{
 
     @Override
     public ItemModel updateItem(ItemModel item, int id) {
-        return null;
+        try (Connection connection = connectionManager.getConnection()){
+            String query = "UPDATE items SET name = ?, description = ?, price = ?, link = ?, imgUrl = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+
+            preparedStatement.setString(1, item.getName());
+            preparedStatement.setString(2, item.getDescription());
+            preparedStatement.setDouble(3, item.getPrice());
+            preparedStatement.setString(4, item.getUrl());
+            preparedStatement.setString(5, item.getImgUrl());
+
+            preparedStatement.setInt(6,id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return item;
     }
     @Override
     public ItemModel showUpdateItemForm(int id) {
         for (ItemModel i : itemModelList){
-            if (i.getWishlistId() == id){
+            if (i.getId() == id){
                 return i;
             }
         }
@@ -59,7 +100,7 @@ public class ItemRepo implements ItemRepoInterface{
         try (Connection connection = connectionManager.getConnection()){
             String query = "DELETE FROM items WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1,id );
             preparedStatement.executeUpdate();
             return true;
 
@@ -71,4 +112,4 @@ public class ItemRepo implements ItemRepoInterface{
     public User findItemById(int id) {
         return null;
     }
-}
+    }

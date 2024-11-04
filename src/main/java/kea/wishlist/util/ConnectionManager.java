@@ -33,16 +33,7 @@ public class ConnectionManager {
         this.PASSWORD = PASSWORD;
     }
 
-    public Connection getConnection(){
-        if (connection != null){
-            return connection;
-        }
-        try {
-            connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("Could not connect to DB");
-            throw new RuntimeException(e);
-        }
-        return connection;
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 }

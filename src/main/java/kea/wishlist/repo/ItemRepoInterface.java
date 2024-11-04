@@ -6,7 +6,7 @@ import kea.wishlist.model.User;
 import java.sql.SQLException;
 
 public interface ItemRepoInterface {
-    ItemModel addItem(ItemModel item) throws SQLException;
+    ItemModel addItem(ItemModel item, int wishlistId) throws SQLException;
     ItemModel updateItem(ItemModel item, int id);
     ItemModel showUpdateItemForm(int id);
     boolean deleteItem(int id) throws SQLException;
