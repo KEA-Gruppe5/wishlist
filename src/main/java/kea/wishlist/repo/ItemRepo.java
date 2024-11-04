@@ -23,7 +23,6 @@ public class ItemRepo implements ItemRepoInterface{
         this.connectionManager = connectionManager;
     }
 
-
     @Override
     public ItemModel addItem(ItemModel item) throws SQLException {
         String query = "INSERT INTO items (wishlistId, name, description, price, link, imgUrl) VALUES (?, ?, ?, ?, ?, ?)";
@@ -37,7 +36,6 @@ public class ItemRepo implements ItemRepoInterface{
             preparedStatement.setString(5, item.getUrl());
             preparedStatement.setString(6, item.getImgUrl());
             preparedStatement.executeUpdate();
-
         }
 
         return item;
@@ -47,7 +45,6 @@ public class ItemRepo implements ItemRepoInterface{
     public ItemModel updateItem(ItemModel item, int id) {
         return null;
     }
-
     @Override
     public ItemModel showUpdateItemForm(int id) {
         for (ItemModel i : itemModelList){
@@ -57,7 +54,6 @@ public class ItemRepo implements ItemRepoInterface{
         }
         throw new NoSuchElementException("No item found for wishlist with id " + id);
     }
-
     @Override
     public boolean deleteItem(int id){
         try (Connection connection = connectionManager.getConnection()){
@@ -71,7 +67,6 @@ public class ItemRepo implements ItemRepoInterface{
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public User findItemById(int id) {
         return null;

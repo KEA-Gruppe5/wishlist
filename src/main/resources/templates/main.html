@@ -5,23 +5,22 @@
 </head>
 <body>
 
-<h1>Wishlist Retrieval Test</h1>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wishlists</title>
+</head>
+<body>
 
-<!-- Button to retrieve wishlists for user ID 1 -->
-<form action="/wishlists/1/wishList/main" method="get">
-    <button type="submit">Get Wishlists for User ID 1</button>
-</form>
+<h1>Your Wishlists</h1>
+http://localhost:8080/wishList/1/main
 
-<!-- Section to display the wishlists -->
-<div th:if="${wishlists != null}">
-    <h2>Wishlists for User ID 1</h2>
-    <ul>
-        <li th:each="wishlist : ${wishlists}">
-            <span th:text="${wishlist.name}"></span> <!-- Display wishlist name -->
-        </li>
-    </ul>
-</div>
 
+<ul>
+    <li th:each="wishlist : ${wishlists}" th:text="${wishlist.name}">Wishlist Name</li>
+</ul>
+
+<a th:href="@{/wishList/{userId}/create(userId=${userId})}">Create a New Wishlist</a>
 
 
 
