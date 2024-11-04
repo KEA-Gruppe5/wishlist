@@ -1,39 +1,29 @@
 package kea.wishlist.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 @Component
 public class ConnectionManager {
 
-    private static Connection connection;
+    private final DataSource dataSource;
 
-//    @Value("${spring.datasource.url}")
-//    private String URL;
-//    @Value("${spring.datasource.username}")
-//    private String USERNAME;
-//    @Value("${spring.datasource.password}")
-//    private String PASSWORD;
-
-
-    private final String URL;
-    private final String USERNAME;
-    private final String PASSWORD;
-
-
-    public ConnectionManager(@Value("${spring.datasource.url}") String URL,
-                             @Value("${spring.datasource.username}")String USERNAME,
-                             @Value("${spring.datasource.password}")String PASSWORD) {
-        this.URL = URL;
-        this.USERNAME = USERNAME;
-        this.PASSWORD = PASSWORD;
+    @Autowired
+    public ConnectionManager(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+    public Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println("Could not connect to DB");
+            throw new RuntimeException(e);
+        }
     }
 }

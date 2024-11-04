@@ -1,5 +1,5 @@
 package kea.wishlist.model;
-import java.util.List;
+
 
 public class User {
     private int id;
@@ -75,5 +75,17 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

@@ -7,10 +7,7 @@ import kea.wishlist.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Repository
 public class UserRepository implements UserRepoInterface{
@@ -24,8 +21,8 @@ public class UserRepository implements UserRepoInterface{
     @Override
     public User addUser(User user) throws SQLException {
         try(Connection connection = connectionManager.getConnection()){
-            String query = "INSERT INTO USERS (FIRSTNAME, LASTNAME, AGE, EMAIL, PASSWORD) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            String query = "INSERT INTO Wishlist.users (first_name, last_name, age, email, password) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setInt(3, user.getAge());
@@ -49,7 +46,7 @@ public class UserRepository implements UserRepoInterface{
     }
 
     @Override
-    public boolean deletedUser(int id) throws SQLException {
+    public boolean deletedUser(int id){
         return false;
     }
 
