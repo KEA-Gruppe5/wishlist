@@ -18,7 +18,6 @@ public class WishlistController {
 
 
     private final WishlistService wishlistService;
-
     @Autowired
     public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
@@ -34,14 +33,14 @@ public class WishlistController {
     @PostMapping("/{userId}/save")
     public String createWishlist(@PathVariable int userId, @ModelAttribute WishlistModel wishlist, Model model) {
         try {
-            wishlist.setUserId(userId); // Set the user ID in the wishlist
-            // Call the service to save the wishlist
+            wishlist.setUserId(userId);
             wishlistService.addWishlist(wishlist);
             model.addAttribute("message", "Wishlist created successfully with ID: " + wishlist.getId());
         } catch (SQLException e) {
             model.addAttribute("message", "Error creating wishlist: " + e.getMessage());
         }
-        return "redirect:/newWishlist"; // Return the view name
+        return "redirect:/wishList/1/main";
+
     }
     @DeleteMapping("/{id}/delete")
     public String deleteWishList(@PathVariable int id) throws SQLException {
@@ -73,6 +72,7 @@ public class WishlistController {
         try {
             List<WishlistModel> wishlists = wishlistService.getWishlistsByUserId(userId);
             model.addAttribute("wishlists", wishlists);
+            model.addAttribute("userId", userId);
             if (wishlists.isEmpty()) {
                 model.addAttribute("message", "No wishlists found for this user.");
             }
@@ -83,11 +83,5 @@ public class WishlistController {
             return "error";
         }
     }
-    @GetMapping("/main")
-    public String showMain(){
-        return "main";
-    }
-
-
 
 }

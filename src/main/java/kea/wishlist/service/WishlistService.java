@@ -37,5 +37,4 @@ public class WishlistService {
         return wishlistRepo.oneListWithId(id);
     }
 
-
 }
