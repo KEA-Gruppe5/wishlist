@@ -2,9 +2,9 @@ CREATE DATABASE Wishlist;
 USE Wishlist;
 
 CREATE TABLE  users (
-                        userId INT AUTO_INCREMENT PRIMARY KEY,
-                        firstName VARCHAR(25),
-                        lastName VARCHAR(255),
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        first_name VARCHAR(25),
+                        last_name VARCHAR(255),
                         age INT,
                         email VARCHAR(255) UNIQUE,
                         password VARCHAR(255),
@@ -13,18 +13,18 @@ CREATE TABLE  users (
 
 CREATE TABLE wishlists (
                            id INT AUTO_INCREMENT PRIMARY KEY,
-                           userId INT,
+                           user_id INT,
                            name VARCHAR(255),
-                           FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+                           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE items (
                        id INT AUTO_INCREMENT PRIMARY KEY,
-                       wishlistId INT,
+                       wishlist_id INT,
                        name VARCHAR(255),
                        description VARCHAR(255),
                        price DOUBLE,
                        link VARCHAR(255),
-                       imgUrl VARCHAR(255),
-                       FOREIGN KEY (wishlistId) REFERENCES wishlists(id) ON DELETE CASCADE
+                       img_url VARCHAR(255),
+                       FOREIGN KEY (wishlist_id) REFERENCES wishlists(id) ON DELETE CASCADE
 );
