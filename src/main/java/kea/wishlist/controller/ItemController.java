@@ -38,7 +38,7 @@ public class ItemController {
     @PostMapping("/{wishlistId}/addItem")
     public String addItem(@ModelAttribute ItemModel item, @PathVariable("wishlistId") int wishlistId) throws SQLException {
         itemService.addItem(item, wishlistId);
-        return "redirect:/item/{wishlistId}";
+        return "redirect:/wishlist/{wishlistId}";
     }
 
 
@@ -53,7 +53,7 @@ public class ItemController {
     @PostMapping("/update/{itemId}/{wishlistId}")
     public String updateItem(@PathVariable("itemId") int itemId, @ModelAttribute ItemModel itemModel,@PathVariable("wishlistId") int wishlistId){
         itemService.updateItem(itemModel,itemId);
-        return "redirect:/item/{wishlistId}";
+        return "redirect:/wishlist/{wishlistId}";
     }
 
 
@@ -61,6 +61,6 @@ public class ItemController {
     @PostMapping("/delete/{itemId}/{wishlistId}")
     public String deleteItem(@PathVariable int itemId, @PathVariable("wishlistId") int wishlistId) throws SQLException {
         itemService.deleteItem(itemId);
-        return "redirect:/item/{wishlistId}";
+        return "redirect:/wishlist/{wishlistId}";
     }
 }
