@@ -104,7 +104,7 @@ class ItemControllerTest {
         int wishlistId = 8;
 
         mockMvc.perform(post("/item/update/{itemId}/{wishlistId}", itemId,wishlistId))
-                .andExpect(redirectedUrl("/item/" + wishlistId));
+                .andExpect(redirectedUrl("/wishlist/" + wishlistId));
     }
 
     @Test
@@ -116,7 +116,7 @@ class ItemControllerTest {
 
         //Act & Assert
         mockMvc.perform(post("/item/delete/{itemId}/{wishlistId}", itemId, wishlistId))
-                .andExpect(redirectedUrl("/item/" + wishlistId));
+                .andExpect(redirectedUrl("/wishlist/" + wishlistId));
 
         //verify
         verify(itemService, times(1)).deleteItem(itemId);
