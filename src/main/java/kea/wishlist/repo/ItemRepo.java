@@ -25,16 +25,16 @@ public class ItemRepo implements ItemRepoInterface{
             itemModelList.clear();
         try (Connection connection = connectionManager.getConnection()) {
 
-            String query = "SELECT wishlists.id AS wishlistId, " + // Explicitly selecting as 'wishlistId'
-                    "wishlists.userId, " +
+            String query = "SELECT wishlists.id AS wishlist_Id, " + // Explicitly selecting as 'wishlistId'
+                    "wishlists.user_Id, " +
                     "items.id, " +
                     "items.name, " +
                     "items.description, " +
                     "items.price, " +
                     "items.link, " +
-                    "items.imgUrl " +
+                    "items.img_Url " +
                     "FROM wishlists " +
-                    "JOIN items ON wishlists.id = items.wishlistId " +
+                    "JOIN items ON wishlists.id = items.wishlist_Id " +
                     "WHERE wishlists.id = ?";
 
 
@@ -44,9 +44,9 @@ public class ItemRepo implements ItemRepoInterface{
             while (resultSet.next()) {
                 ItemModel itemModel = new ItemModel();
                 // Set wishlist-related details if needed (e.g., wishlistName)
-                int fetchedWishlistId = resultSet.getInt("wishlistId");
+                int fetchedWishlistId = resultSet.getInt("wishlist_id");
                 String wishlistName = resultSet.getString("name");
-                int userId = resultSet.getInt("userId");
+                int userId = resultSet.getInt("user_id");
 
                 // Populate the item model with data from the result set
                 itemModel.setId(resultSet.getInt("id"));
@@ -55,7 +55,7 @@ public class ItemRepo implements ItemRepoInterface{
                 itemModel.setDescription(resultSet.getString("description"));
                 itemModel.setPrice(resultSet.getDouble("price"));
                 itemModel.setUrl(resultSet.getString("link"));
-                itemModel.setImgUrl(resultSet.getString("imgUrl"));
+                itemModel.setImgUrl(resultSet.getString("img_url"));
 
                 itemModelList.add(itemModel);
             }
@@ -69,7 +69,7 @@ public class ItemRepo implements ItemRepoInterface{
 
     @Override
     public ItemModel addItem(ItemModel item, int wishlistId) throws SQLException {
-        String query = "INSERT INTO items (wishlistId, name, description, price, link, imgUrl) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO items (wishlist_id, name, description, price, link, img_url) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -88,7 +88,7 @@ public class ItemRepo implements ItemRepoInterface{
     @Override
     public ItemModel updateItem(ItemModel item, int id) {
         try (Connection connection = connectionManager.getConnection()){
-            String query = "UPDATE items SET name = ?, description = ?, price = ?, link = ?, imgUrl = ? WHERE id = ?";
+            String query = "UPDATE items SET name = ?, description = ?, price = ?, link = ?, img_url = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
 
