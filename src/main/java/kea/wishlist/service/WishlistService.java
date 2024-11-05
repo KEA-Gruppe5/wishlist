@@ -17,8 +17,8 @@ public class WishlistService {
     public WishlistService(WishlistRepo wishlistRepo) {
         this.wishlistRepo = wishlistRepo;
     }
-     public void addWishlist(WishlistModel wishlist) throws SQLException {
-         wishlistRepo.addWishList(wishlist);
+     public void addWishlist(WishlistModel wishlist, int user_id) throws SQLException {
+         wishlistRepo.addWishList(wishlist, user_id);
     }
     public WishlistModel updateWishList(WishlistModel wishlistModel, int id) throws SQLException {
         return wishlistRepo.updateWishList(wishlistModel,id);

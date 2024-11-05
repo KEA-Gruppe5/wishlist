@@ -52,15 +52,14 @@ public class WishlistController {
         return "newWishlist";
     }
     @PostMapping("/{userId}/save")
-    public String createWishlist(@PathVariable int userId, @ModelAttribute WishlistModel wishlist, Model model) {
+    public String createWishlist(@PathVariable("userId") int user_id, @ModelAttribute WishlistModel wishlist, Model model) {
         try {
-            wishlist.setUserId(userId);
-            wishlistService.addWishlist(wishlist);
+            wishlistService.addWishlist(wishlist, user_id);
             model.addAttribute("message", "Wishlist created successfully with ID: " + wishlist.getId());
         } catch (SQLException e) {
             model.addAttribute("message", "Error creating wishlist: " + e.getMessage());
         }
-        return "redirect:/wishList/1/main";
+        return "redirect:/wishlist/1/main";
 
     }
     @DeleteMapping("/{id}/delete")

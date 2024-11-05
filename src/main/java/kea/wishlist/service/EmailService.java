@@ -18,8 +18,8 @@ public class EmailService {
     public void sendEmail(String receiver){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(receiver);
-        message.setSubject("subject");
-        message.setText("hello world");
+        message.setSubject("Confirm your registration at Wishlist.kea");
+        message.setText("*verification link*");
         javaMailSender.send(message);
     }
 
