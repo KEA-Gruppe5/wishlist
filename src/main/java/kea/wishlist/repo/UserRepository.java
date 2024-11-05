@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 
 @Repository
-public class UserRepository implements UserRepoInterface{
+public class UserRepository implements UserRepositoryInterface {
     private final ConnectionManager connectionManager;
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
@@ -55,7 +55,25 @@ public class UserRepository implements UserRepoInterface{
     }
 
     @Override
-    public User findUserWithId(int id) {
-        return null;
+    public User findUserByEmail(String email) throws SQLException {
+        try(Connection connection = connectionManager.getConnection()){
+            String query = "SELECT * FROM Wishlist.users WHERE email = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setFirstName(resultSet.getString("first_name"));
+                user.setLastName(resultSet.getString("last_name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setAge(resultSet.getInt("age"));
+                user.setPassword(resultSet.getString("password"));
+                return user;
+            }
+            return null;
+        }
     }
+
+
 }
