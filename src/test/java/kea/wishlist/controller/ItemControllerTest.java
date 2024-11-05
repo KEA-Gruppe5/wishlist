@@ -16,7 +16,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,74 +43,95 @@ class ItemControllerTest {
     @MockBean
     private ItemService itemService;
     private MockHttpSession session;
+    @Autowired
+    private ItemController itemController;
 
 
     @BeforeEach
     void setUp() {
-        session = new MockHttpSession();
-        User user = new User();
-        user.setId(10); // Set an ID or other required user attributes
-        session.setAttribute("userId", user);
+
     }
 
     @AfterEach
     void tearDown() {
     }
 
-//    @Test
-//    void findAllItems() throws Exception {
-//        // Arrange
-//        int wishlistIdToLookFor = 1;
-//        List<ItemModel> mockItems = new ArrayList<>();
-//        mockItems.add(new ItemModel(1,1, "Item 1", "Description 1", "http://link1.com",10.0,  "http://img1.com"));
-//        Mockito.when(itemService.getAllItems(wishlistIdToLookFor)).thenReturn(mockItems);
-//
-//        // Act & Assert
-//        mockMvc.perform(get("/item/" + 1))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("wishlist"))
-//                .andExpect(model().attributeExists("findAllItems"))
-//                .andExpect(model().attribute("findAllItems", mockItems));
-//    }
-//
-//    @Test
-//    void showItemForm() throws Exception {
-//        mockMvc.perform(get("/item/create"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("addItem"));
-//    }
-//
-//    @Test
-//    void addItem() throws Exception {
-//        ItemModel item = new ItemModel();
-//        item.setName("Sample Item");
-//        String wishlistId = "123";
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/{wishlistId}/create", wishlistId)
-//                        .session(session)
-//                        .flashAttr("item", item))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/wishlist"));
-//
-//        verify(itemService, times(1)).addItem(eq(item), item.getWishlistId());
-//    }
-//
-//    @Test
-//    void showUpdateItemForm() {
-//    }
-//
-//    @Test
-//    void updateItem() {
-//    }
-//
-//    @Test
-//    void deleteItem() throws Exception {
-//        //assert
-//        List<ItemModel> mockItems = new ArrayList<>();
-//        int itemId = 1;
-//
-//        //act
-//        mockMvc.perform(delete("/items/delete/" + itemId))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void findAllItems() throws Exception {
+        // Arrange
+        int wishlistIdToLookFor = 1;
+        List<ItemModel> mockItems = new ArrayList<>();
+        mockItems.add(new ItemModel(1,1, "Item 1", "Description 1", "http://link1.com",10.0,  "http://img1.com"));
+        Mockito.when(itemService.getAllItems(wishlistIdToLookFor)).thenReturn(mockItems);
+
+        // Act & Assert
+        mockMvc.perform(get("/item/" + 1))
+                .andExpect(status().isOk())
+                .andExpect(view().name("wishlist"))
+                .andExpect(model().attributeExists("findAllItems"))
+                .andExpect(model().attribute("findAllItems", mockItems));
+    }
+
+    @Test
+    void showItemForm() throws Exception {
+        mockMvc.perform(get("/item/create"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("addItem"));
+    }
+
+    @Test
+    void addItem() throws Exception {
+        ItemModel item = new ItemModel();
+        item.setName("Sample Item");
+        String wishlistId = "123";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/{wishlistId}/create", wishlistId)
+                        .session(session)
+                        .flashAttr("item", item))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist"));
+
+        verify(itemService, times(1)).addItem(eq(item), item.getWishlistId());
+    }
+
+    @Test
+    void showUpdateItemForm() throws Exception {
+        int itemId = 1;
+        List<ItemModel> mockItems = new ArrayList<>();
+        mockItems.add(new ItemModel(1,1, "Item 1", "Description 1", "http://link1.com",10.0,  "http://img1.com"))
+
+        mockMvc.perform(get("/item/update/{itemId}", itemId))
+                .andExpect(status().isOk()).andExpect(view().name("editItem"))
+                .andExpect(model().attributeExists("showUpdateItemForm", items));
+    }
+
+    @Test
+    void updateItem() throws Exception {
+        //assert
+        int itemId = 1;
+        int wishlistId = 8;
+        ItemModel itemModel = new ItemModel(1,1, "Item 1", "Description 1", "http://link1.com",10.0,  "http://img1.com");
+
+        mockMvc = MockMvcBuilders.standaloneSetup(itemController).build();
+        mockMvc.perform(post("/item/update/{itemId}/{wishlistId}", itemId,wishlistId))
+                .andExpect(redirectedUrl("/item/" +wishlistId));
+
+        //verify
+        verify(itemService,times(1)).updateItem(itemModel, wishlistId);
+    }
+
+    @Test
+    void deleteItem() throws Exception {
+        //assert
+        int itemId = 1;
+        int wishlistId = 8;
+        mockMvc = MockMvcBuilders.standaloneSetup(itemController).build();
+
+        //Act & Assert
+        mockMvc.perform(post("/item/delete/{itemId}/{wishlistId}", itemId, wishlistId))
+                        .andExpect(redirectedUrl("/item/" + wishlistId));
+
+        //verify
+        verify(itemService, times(1)).deleteItem(itemId);
+    }
 }
