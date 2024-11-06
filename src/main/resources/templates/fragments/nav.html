@@ -15,6 +15,22 @@
             <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
             <li class="nav-item"><a href="/wishlist/logout" class="nav-link">Logout</a></li>
 
+            <li class="nav-item">
+                <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit()">Debug Login</button>
+            </li>
+            <form id="loginForm" action="http://localhost:8181/login" method="post" style="display: none;">
+                <input type="email" id="email" name="email" />
+                <input type="password" id="password" name="password" />
+            </form>
+
+            <script>
+                function autoFillAndSubmit() {
+                    document.getElementById('email').value = 'alice.smith@example.com';
+                    document.getElementById('password').value = 'password123';
+                    document.getElementById('loginForm').submit();
+                }
+            </script>
+
         </ul>
     </header>
 </div>
