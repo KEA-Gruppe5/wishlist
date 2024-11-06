@@ -1,8 +1,8 @@
 package kea.wishlist.controller;
 
-import kea.wishlist.model.Item;
+import kea.wishlist.model.ItemModel;
 import kea.wishlist.model.User;
-import kea.wishlist.model.Wishlist;
+import kea.wishlist.model.WishlistModel;
 import kea.wishlist.service.ItemService;
 import kea.wishlist.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +18,12 @@ import java.util.List;
 public class WishlistController {
 
     private final WishlistService wishlistService;
+    private final ItemService itemService;
 
     @Autowired
-    private ItemService itemService;
-
-    @Autowired
-    public WishlistController(WishlistService wishlistService) {
+    public WishlistController(WishlistService wishlistService, ItemService itemService) {
         this.wishlistService = wishlistService;
+        this.itemService = itemService;
     }
 
     //MOVED BY KRISTOFFER, TO GET /wishlist endpoint
@@ -59,8 +58,7 @@ public class WishlistController {
         } catch (SQLException e) {
             model.addAttribute("message", "Error creating wishlist: " + e.getMessage());
         }
-        return "redirect:/wishlist/1/main";
-
+        return "redirect:/wishlist/" + user_id + "/main";
     }
     @DeleteMapping("/{id}/delete")
     public String deleteWishList(@PathVariable int id) throws SQLException {
