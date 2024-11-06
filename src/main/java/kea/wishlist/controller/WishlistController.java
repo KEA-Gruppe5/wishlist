@@ -1,5 +1,6 @@
 package kea.wishlist.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kea.wishlist.model.Item;
 import kea.wishlist.model.Wishlist;
 import kea.wishlist.service.ItemService;
@@ -81,8 +82,10 @@ public class WishlistController {
 
     // Display all wishlists for a specific user
     @GetMapping("")
-    public String getWishlistsByUserId(@PathVariable int userId, Model model) {
+    public String getWishlistsByUserId(@PathVariable int userId, Model model,
+                                       HttpSession httpSession) {
         try {
+            System.out.println(httpSession.getAttribute("userId"));
             List<Wishlist> wishlists = wishlistService.getWishlistsByUserId(userId);
             model.addAttribute("wishlists", wishlists);
             model.addAttribute("userId", userId);

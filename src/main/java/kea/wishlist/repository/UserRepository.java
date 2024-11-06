@@ -30,7 +30,7 @@ public class UserRepository implements UserRepositoryInterface {
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setInt(3, user.getAge());
             preparedStatement.setString(4, user.getEmail());
-            preparedStatement.setString(5, user.getEmail());
+            preparedStatement.setString(5, user.getPassword());
             int rowsAffected = preparedStatement.executeUpdate();
             if(rowsAffected > 0){
                 try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
@@ -74,6 +74,7 @@ public class UserRepository implements UserRepositoryInterface {
             return null;
         }
     }
+
 
 
 }
