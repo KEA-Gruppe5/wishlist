@@ -115,14 +115,25 @@ public class ItemRepository implements ItemRepositoryInterface {
     }
 
     @Override
-    public Item findItemById(int id) {
-
-        //TODO: replace with select from db
-        for (Item i : itemList) {
-            if (i.getId() == id) {
-                return i;
+    public Item findItemById(int id) throws SQLException {
+        try (Connection connection = connectionManager.getConnection()) {
+            String query = "SELECT * FROM items WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Item item = new Item();
+                item.setId(resultSet.getInt("id"));
+                        item.setId(resultSet.getInt("wishlist_id"));
+                        item.setName(resultSet.getString("name"));
+                        item.setDescription(resultSet.getString("description"));
+                        item.setPrice(resultSet.getInt("price"));
+                        item.setUrl(resultSet.getString("link"));
+                        item.setUrl(resultSet.getString("img_url"));
+                return item;
+            } else {
+                throw new NoSuchElementException("No item found with id " + id);
             }
         }
-        throw new NoSuchElementException("No item found with id " + id);
     }
 }

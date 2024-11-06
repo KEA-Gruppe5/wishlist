@@ -34,7 +34,7 @@ public class ItemController {
 
 
     @GetMapping("/{itemId}/update")
-    public String showUpdateItemForm(@PathVariable("itemId") int itemId, Model model) {
+    public String showUpdateItemForm(@PathVariable("itemId") int itemId, Model model) throws SQLException {
         Item item = itemService.findItemById(itemId);
         model.addAttribute("item", item);
         return "item/editItem";
@@ -50,7 +50,7 @@ public class ItemController {
 
     //TODO should be Deletemapping
     @PostMapping("/{itemId}/delete")
-    public String deleteItem(@PathVariable int itemId) {
+    public String deleteItem(@PathVariable int itemId) throws SQLException {
         Item item = itemService.findItemById(itemId);
         itemService.deleteItem(itemId);
         return "redirect:/wishlist/" + item.getWishlistId();
