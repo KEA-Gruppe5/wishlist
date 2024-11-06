@@ -1,6 +1,8 @@
 package kea.wishlist.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kea.wishlist.model.Item;
+import kea.wishlist.model.User;
 import kea.wishlist.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,9 +29,10 @@ public class ItemController {
     }
 
     @PostMapping("/{wishlistId}/add")
-    public String addItem(@ModelAttribute Item item, @PathVariable("wishlistId") int wishlistId) throws SQLException {
+    public String addItem(@ModelAttribute Item item, @PathVariable("wishlistId") int wishlistId,HttpSession session) throws SQLException {
         itemService.addItem(item, wishlistId);
-        return "redirect:/wishlist/{wishlistId}";
+        Integer userId = (Integer) session.getAttribute("userId");
+        return "redirect:/" + userId + "/wishlist/" + wishlistId;
     }
 
 
@@ -42,17 +45,19 @@ public class ItemController {
 
     //TODO should be put mapping
     @PostMapping("/{itemId}/update")
-    public String updateItem(@PathVariable("itemId") int itemId, @ModelAttribute Item item) {
+    public String updateItem(@PathVariable("itemId") int itemId, @ModelAttribute Item item, HttpSession session) throws SQLException {
+        Integer userId = (Integer) session.getAttribute("userId");
         itemService.updateItem(item, itemId);
-        return "redirect:/wishlist/" + item.getWishlistId();
+        int wishlistId = itemService.findItemById(itemId).getWishlistId();
+        return "redirect:/" + userId + "/wishlist/" + wishlistId;
     }
 
 
     //TODO should be Deletemapping
     @PostMapping("/{itemId}/delete")
-    public String deleteItem(@PathVariable int itemId) throws SQLException {
-        Item item = itemService.findItemById(itemId);
+    public String deleteItem(@PathVariable int itemId, HttpSession session) throws SQLException {
+        int wishlistId = itemService.findItemById(itemId).getWishlistId();
+        Integer userId = (Integer) session.getAttribute("userId");
         itemService.deleteItem(itemId);
-        return "redirect:/wishlist/" + item.getWishlistId();
-    }
+        return "redirect:/" + userId + "/wishlist/" + wishlistId;    }
 }
