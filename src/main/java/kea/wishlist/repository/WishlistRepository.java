@@ -1,5 +1,5 @@
-package kea.wishlist.repo;
-import kea.wishlist.model.WishlistModel;
+package kea.wishlist.repository;
+import kea.wishlist.model.Wishlist;
 import kea.wishlist.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("WishList_Repo")
-public class WishlistRepo implements WishListRepoInterface {
+public class WishlistRepository implements WishListRepositoryInterface {
     private final ConnectionManager connectionManager;
     @Autowired
-    public WishlistRepo(ConnectionManager connectionManager) {
+    public WishlistRepository(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 
     //problem, need to assign
     @Override
-    public void addWishList(WishlistModel wish, int user_id) throws SQLException {
+    public Wishlist addWishlist(Wishlist wishlist, int userId) throws SQLException {
         // SQL query with placeholders
         String insertQuery = "INSERT INTO WISHLISTS (user_id, name) VALUES (?,?)";
 
@@ -26,8 +26,8 @@ public class WishlistRepo implements WishListRepoInterface {
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             // Set the values in the prepared statement
 
-            preparedStatement.setInt(1, user_id);
-            preparedStatement.setString(2, wish.getName());
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, wishlist.getName());
 
             // Execute the update and check if successful
             int affectedRows = preparedStatement.executeUpdate();
@@ -37,17 +37,17 @@ public class WishlistRepo implements WishListRepoInterface {
             // Retrieve the generated ID, bec table has auto-increment for id
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    wish.setId(generatedKeys.getInt(1));
+                    wishlist.setId(generatedKeys.getInt(1));
                 } else {
                     throw new SQLException("Creating wishlist failed, no ID obtained.");
                 }
             }
-
         }
+        return wishlist;
     }
 
     @Override
-    public WishlistModel updateWishList(WishlistModel wish, int id) throws SQLException {
+    public Wishlist updateWishlist(Wishlist wish, int id) throws SQLException {
         String updateQuery = "UPDATE WISHLISTS SET name = ? WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateList = connection.prepareStatement(updateQuery)) {
@@ -64,7 +64,7 @@ public class WishlistRepo implements WishListRepoInterface {
     }
 
     @Override
-    public Boolean deleteWishList(int id) throws SQLException {
+    public Boolean deleteWishlist(int id) throws SQLException {
         String deleteQuery = "DELETE FROM WISHLISTS WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement deleteList = connection.prepareStatement(deleteQuery)) {
@@ -79,16 +79,16 @@ public class WishlistRepo implements WishListRepoInterface {
 
 
     @Override
-    public List<WishlistModel> findAllWishlists() throws SQLException {
+    public List<Wishlist> findAllWishlists() throws SQLException {
         String findAllQuery = "SELECT * FROM WISHLISTS";
-        List<WishlistModel> wishlists = new ArrayList<>();
+        List<Wishlist> wishlists = new ArrayList<>();
 
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(findAllQuery);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                WishlistModel wishlist = new WishlistModel();
+                Wishlist wishlist = new Wishlist();
                 wishlist.setId(resultSet.getInt("id"));
                 wishlist.setUserId(resultSet.getInt("user_id"));
                 wishlist.setName(resultSet.getString("name"));
@@ -99,9 +99,9 @@ public class WishlistRepo implements WishListRepoInterface {
     }
 
     @Override
-    public List<WishlistModel> allListByUser(int userId) throws SQLException {
+    public List<Wishlist> findAllListsByUserId(int userId) throws SQLException {
         String findQuery = "SELECT * FROM WISHLISTS WHERE user_id = ?";
-        List<WishlistModel> wishlists = new ArrayList<>();
+        List<Wishlist> wishlists = new ArrayList<>();
 
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement findList = connection.prepareStatement(findQuery)) {
@@ -110,7 +110,7 @@ public class WishlistRepo implements WishListRepoInterface {
             ResultSet resultSet = findList.executeQuery();
 
             while (resultSet.next()) {
-                WishlistModel wishList = new WishlistModel();
+                Wishlist wishList = new Wishlist();
                 wishList.setId(resultSet.getInt("id"));
                 wishList.setUserId(resultSet.getInt("user_id"));
                 wishList.setName(resultSet.getString("name"));
@@ -122,7 +122,7 @@ public class WishlistRepo implements WishListRepoInterface {
     }
 
     @Override
-    public WishlistModel oneListWithId(int id) throws SQLException {
+    public Wishlist findWishlistById(int id) throws SQLException {
         String findQuery = "SELECT * FROM WISHLISTS WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement findList = connection.prepareStatement(findQuery)) {
@@ -131,7 +131,7 @@ public class WishlistRepo implements WishListRepoInterface {
             ResultSet resultSet = findList.executeQuery();
 
             if (resultSet.next()){
-                WishlistModel wishList = new WishlistModel();
+                Wishlist wishList = new Wishlist();
                 wishList.setId(resultSet.getInt("id"));
                 wishList.setUserId(resultSet.getInt("user_id"));
                 wishList.setName(resultSet.getString("name"));

@@ -1,17 +1,13 @@
 package kea.wishlist.controller;
-import kea.wishlist.model.ItemModel;
-import kea.wishlist.model.WishlistModel;
+import kea.wishlist.model.Wishlist;
 import kea.wishlist.service.ItemService;
 import kea.wishlist.service.WishlistService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,54 +27,42 @@ class WishlistControllerTest {
     @MockBean
     private ItemService itemService;
 
-    @Autowired
-    private WishlistController wishlistController;
-
-
-
-
     @Test
     void testWishlistForm_showForm() throws Exception {
         int userId = 1;
-        mockMvc.perform(get("/wishlist/{userId}/create", userId)) // Specify the path and userId
+        mockMvc.perform(get("/{userId}/wishlist/create", userId)) // Specify the path and userId
                 .andExpect(status().isOk())
-                .andExpect(view().name("newWishlist"));
+                .andExpect(view().name("wishlist/newWishlist"));
     }
 
     @Test
     public void testCreateWishlist_ReturnsStatus200() throws Exception {
         int userId = 1;
-        WishlistModel wishlist = new WishlistModel(userId, "New Wishlist");
+        Wishlist wishlist = new Wishlist(userId, "New Wishlist");
 
-
-        doNothing().when(wishlistService).addWishlist(any(WishlistModel.class), eq(userId));
-
-        mockMvc.perform(post("/" + userId + "/save")
+        mockMvc.perform(post("/{userId}/wishlist/create", userId)
                         .param("userId", String.valueOf(userId))
                         .param("name", wishlist.getName()))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"+ userId + "/wishlist"));
     }
 
     @Test
     void deleteWishList_ReturnsRedirectionStatus() throws Exception {
+        int userId = 1;
         int wishlistId = 1;
+        doNothing().when(wishlistService).deleteWishlist(wishlistId);
 
-
-        doNothing().when(wishlistService).deleteWishList(wishlistId);
-
-        mockMvc.perform(delete("/wishlist/{id}/delete", wishlistId))
+        mockMvc.perform(delete("/{userId}/wishlist/{wishlistId}/delete", userId, wishlistId))
                 .andExpect(status().is3xxRedirection());
 
-
-        verify(wishlistService, times(1)).deleteWishList(wishlistId);
+        verify(wishlistService, times(1)).deleteWishlist(wishlistId);
     }
 
 
     @Test
     void findAllItems() {
     }
-
-
 
 
     @Test

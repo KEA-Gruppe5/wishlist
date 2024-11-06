@@ -1,7 +1,7 @@
 package kea.wishlist.service;
 
 import kea.wishlist.model.User;
-import kea.wishlist.repo.UserRepository;
+import kea.wishlist.repository.UserRepository;
 import kea.wishlist.util.EmailAlreadyExistsException;
 import kea.wishlist.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -16,24 +16,24 @@
 <div class="form-container">
     <h1>Add New Item to Your Wishlist</h1>
 
-    <form th:object="${showAddFormItem}" th:action="@{/item/{wishlistId}/addItem(wishlistId=${wishlistidFromGet})}" method="post">
+    <form th:object="${showItemForm}" th:action="@{/item/{wishlistId}/add(wishlistId=${wishlistId})}" method="post">
 
         <input type="hidden" th:field="*{wishlistId}" />
 
-        <label for="name">Enter product Name</label>
-        <input type="text" id="name" th:field="*{name}" placeholder="Attraction Name">
+        <label for="name">Enter product name</label>
+        <input type="text" id="name" th:field="*{name}" placeholder="Name">
 
-        <label for="description">Enter Description</label>
+        <label for="description">Enter description</label>
         <input type="text" id="description" th:field="*{description}" placeholder="Description">
 
         <label for="url">Enter URL</label>
         <input type="text" id="url" th:field="*{url}" placeholder="URL">
 
-        <label for="imgUrl">Enter Image URL</label>
+        <label for="imgUrl">Enter image URL</label>
         <input type="text" id="imgUrl" th:field="*{imgUrl}" placeholder="Image URL">
 
         <div id="priceField">
-            <label for="price">Enter Price</label>
+            <label for="price">Enter price</label>
             <input type="text" id="price" th:field="*{price}" placeholder="Price in DKK">
         </div>
 

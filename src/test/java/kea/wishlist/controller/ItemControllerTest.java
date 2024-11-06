@@ -1,32 +1,20 @@
 package kea.wishlist.controller;
 
-import kea.wishlist.model.ItemModel;
-import kea.wishlist.model.User;
+import kea.wishlist.model.Item;
 import kea.wishlist.service.ItemService;
 import kea.wishlist.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -60,17 +48,17 @@ class ItemControllerTest {
     @Test
     void showItemForm() throws Exception {
         int wishlistId = 1;
-        mockMvc.perform(get("/item/{wishlistId}/addItem", wishlistId))
+        mockMvc.perform(get("/item/{wishlistId}/add", wishlistId))
                 .andExpect(status().isOk())
-                .andExpect(view().name("addItem"));
+                .andExpect(view().name("item/addItem"));
     }
 
     @Test
     void addItem() throws Exception {
-        ItemModel item = new ItemModel();
+        Item item = new Item();
         item.setName("Sample Item");
         int wishlistId = 123;
-        mockMvc.perform(post("/item/{wishlistId}/addItem", wishlistId))
+        mockMvc.perform(post("/item/{wishlistId}/add", wishlistId))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/wishlist/{wishlistId}"))
                 .andExpect(redirectedUrl("/wishlist/" + wishlistId));
@@ -81,20 +69,20 @@ class ItemControllerTest {
     void showUpdateItemForm() throws Exception {
         int itemId = 1;
 
-        // Mocking ItemModel with itemId
-        ItemModel mockItem = new ItemModel();
+        // Mocking Item with itemId
+        Item mockItem = new Item();
         mockItem.setId(itemId);
         mockItem.setName("Test Item");
 
         // Set up the mock response from itemService
-        when(itemService.showUpdateItemForm(itemId)).thenReturn(mockItem);
+        when(itemService.findItemById(itemId)).thenReturn(mockItem);
 
         // Perform GET request and validate the response
-        mockMvc.perform(get("/item/update/{itemId}", itemId))
+        mockMvc.perform(get("/item/{itemId}/update", itemId))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editItem"))
-                .andExpect(model().attributeExists("showUpdateItemForm"))
-                .andExpect(model().attribute("showUpdateItemForm", mockItem));
+                .andExpect(view().name("item/editItem"))
+                .andExpect(model().attributeExists("item"))
+                .andExpect(model().attribute("item", mockItem));
     }
 
 
@@ -104,7 +92,7 @@ class ItemControllerTest {
         int itemId = 1;
         int wishlistId = 8;
 
-        mockMvc.perform(post("/item/update/{itemId}/{wishlistId}", itemId,wishlistId))
+        mockMvc.perform(post("/item/{itemId}/update", itemId))
                 .andExpect(redirectedUrl("/wishlist/" + wishlistId));
     }
 
@@ -116,7 +104,7 @@ class ItemControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(itemController).build();
 
         //Act & Assert
-        mockMvc.perform(post("/item/delete/{itemId}/{wishlistId}", itemId, wishlistId))
+        mockMvc.perform(post("/item/{itemId}/delete", itemId))
                 .andExpect(redirectedUrl("/wishlist/" + wishlistId));
 
         //verify
