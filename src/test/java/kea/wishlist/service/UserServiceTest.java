@@ -26,9 +26,10 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private UserService userService;
@@ -40,7 +41,7 @@ class UserServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        user = new User("first name", "last name", "email", 25, "password");
+        user = new User(1, "first name", "last name", "email", 25, "password");
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
     }
 
@@ -49,12 +50,14 @@ class UserServiceTest {
     void testSaveUser() throws SQLException {
 
         when(userRepository.addUser(any())).thenReturn(user);
+        doNothing().when(emailService).sendEmail(anyString());
         User savedUser = userService.saveUser(user);
 
         assertNotNull(savedUser);
         assertEquals("first name", savedUser.getFirstName(), "First names are not equal.");
         assertEquals("encodedPassword", savedUser.getPassword(), "Password is not encoded.");
         verify(userRepository, times(1)).addUser(user);
+        verify(emailService, times(1)).sendEmail(any(String.class));
         logger.info("testSaveUser - " + savedUser);
     }
 
