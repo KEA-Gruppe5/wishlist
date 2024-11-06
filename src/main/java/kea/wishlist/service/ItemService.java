@@ -3,6 +3,7 @@ package kea.wishlist.service;
 import kea.wishlist.model.ItemModel;
 import kea.wishlist.model.User;
 import kea.wishlist.repo.ItemRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ public class ItemService {
 
     private final ItemRepo itemRepo;
 
+    @Autowired
     public ItemService(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
     }

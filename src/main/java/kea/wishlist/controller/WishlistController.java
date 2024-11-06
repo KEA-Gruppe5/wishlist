@@ -18,13 +18,12 @@ import java.util.List;
 public class WishlistController {
 
     private final WishlistService wishlistService;
+    private final ItemService itemService;
 
     @Autowired
-    private ItemService itemService;
-
-    @Autowired
-    public WishlistController(WishlistService wishlistService) {
+    public WishlistController(WishlistService wishlistService, ItemService itemService) {
         this.wishlistService = wishlistService;
+        this.itemService = itemService;
     }
 
     //MOVED BY KRISTOFFER, TO GET /wishlist endpoint
@@ -45,8 +44,7 @@ public class WishlistController {
 
     @GetMapping("/{userId}/create")
     public String showCreateWishlistForm(@PathVariable int userId, Model model) {
-        User user = new User();
-        user.setId(userId);
+
         model.addAttribute("wishlist", new WishlistModel());
         model.addAttribute("userId", userId);
         return "newWishlist";
@@ -59,8 +57,7 @@ public class WishlistController {
         } catch (SQLException e) {
             model.addAttribute("message", "Error creating wishlist: " + e.getMessage());
         }
-        return "redirect:/wishlist/1/main";
-
+        return "redirect:/wishlist/" + user_id + "/main";
     }
     @DeleteMapping("/{id}/delete")
     public String deleteWishList(@PathVariable int id) throws SQLException {
@@ -106,7 +103,6 @@ public class WishlistController {
             // Add a log statement here to confirm the catch block is reached
             System.out.println("Error occurred in getWishlistsByUserId");
             e.printStackTrace();  // This will print the exact error details in the console
-
             model.addAttribute("error", "An error occurred while fetching the wishlists: " + e.getMessage());
             return "error";  // Return the error page if an exception occurs
         }
