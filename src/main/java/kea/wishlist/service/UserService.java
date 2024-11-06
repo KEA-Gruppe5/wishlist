@@ -36,5 +36,9 @@ public class UserService {
         return savedUser;
     }
 
+//    public String generateVerificationLink(){
+//
+//    }
+
 
 }

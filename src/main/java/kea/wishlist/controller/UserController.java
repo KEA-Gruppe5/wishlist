@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
 
@@ -34,5 +35,8 @@ public class UserController {
         return "redirect:/login";
     }
 
-
+    @GetMapping("/verify")
+    public String verifyEmail(@RequestParam String code){
+        return "verification";
+    }
 }
