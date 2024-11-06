@@ -63,14 +63,13 @@ class WishlistControllerTest {
     void deleteWishList_ReturnsRedirectionStatus() throws Exception {
         int wishlistId = 1;
 
-        // Mock the service behavior to do nothing on delete
+
         doNothing().when(wishlistService).deleteWishList(wishlistId);
 
-        // Perform DELETE request and check for a 3xx redirection status without specifying URL
         mockMvc.perform(delete("/wishlist/{id}/delete", wishlistId))
-                .andExpect(status().is3xxRedirection()); // Check for any 3xx status
+                .andExpect(status().is3xxRedirection());
 
-        // Verify the delete method was called with the correct ID
+
         verify(wishlistService, times(1)).deleteWishList(wishlistId);
     }
 
