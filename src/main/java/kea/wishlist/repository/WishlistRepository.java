@@ -18,7 +18,7 @@ public class WishlistRepository implements WishListRepositoryInterface {
 
     //problem, need to assign
     @Override
-    public void addWishList(Wishlist wish, int user_id) throws SQLException {
+    public Wishlist addWishlist(Wishlist wishlist, int userId) throws SQLException {
         // SQL query with placeholders
         String insertQuery = "INSERT INTO WISHLISTS (user_id, name) VALUES (?,?)";
 
@@ -26,8 +26,8 @@ public class WishlistRepository implements WishListRepositoryInterface {
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             // Set the values in the prepared statement
 
-            preparedStatement.setInt(1, user_id);
-            preparedStatement.setString(2, wish.getName());
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, wishlist.getName());
 
             // Execute the update and check if successful
             int affectedRows = preparedStatement.executeUpdate();
@@ -37,17 +37,17 @@ public class WishlistRepository implements WishListRepositoryInterface {
             // Retrieve the generated ID, bec table has auto-increment for id
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    wish.setId(generatedKeys.getInt(1));
+                    wishlist.setId(generatedKeys.getInt(1));
                 } else {
                     throw new SQLException("Creating wishlist failed, no ID obtained.");
                 }
             }
-
         }
+        return wishlist;
     }
 
     @Override
-    public Wishlist updateWishList(Wishlist wish, int id) throws SQLException {
+    public Wishlist updateWishlist(Wishlist wish, int id) throws SQLException {
         String updateQuery = "UPDATE WISHLISTS SET name = ? WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement updateList = connection.prepareStatement(updateQuery)) {
@@ -64,7 +64,7 @@ public class WishlistRepository implements WishListRepositoryInterface {
     }
 
     @Override
-    public Boolean deleteWishList(int id) throws SQLException {
+    public Boolean deleteWishlist(int id) throws SQLException {
         String deleteQuery = "DELETE FROM WISHLISTS WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement deleteList = connection.prepareStatement(deleteQuery)) {
@@ -99,7 +99,7 @@ public class WishlistRepository implements WishListRepositoryInterface {
     }
 
     @Override
-    public List<Wishlist> allListByUser(int userId) throws SQLException {
+    public List<Wishlist> findAllListsByUserId(int userId) throws SQLException {
         String findQuery = "SELECT * FROM WISHLISTS WHERE user_id = ?";
         List<Wishlist> wishlists = new ArrayList<>();
 
@@ -122,7 +122,7 @@ public class WishlistRepository implements WishListRepositoryInterface {
     }
 
     @Override
-    public Wishlist oneListWithId(int id) throws SQLException {
+    public Wishlist findWishlistById(int id) throws SQLException {
         String findQuery = "SELECT * FROM WISHLISTS WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement findList = connection.prepareStatement(findQuery)) {

@@ -6,7 +6,7 @@
 <body>
 
 <h1>Edit Wishlist</h1>
-<form action="@{/wishlist/{id}(id=${wishlist.id})}" method="post" th:action="@{/wishlist/{id}(id=${wishlist.id})}">
+<form th:action="@{/{userId}/wishlist/{wishlistId}/update(wishlistId=${wishlist.id})}" method="post">
     <label for="name">Wishlist Name:</label>
     <input type="text" id="name" name="name" th:value="${wishlist.name}" required/>
 

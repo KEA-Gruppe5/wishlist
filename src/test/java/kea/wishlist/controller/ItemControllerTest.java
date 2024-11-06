@@ -48,9 +48,9 @@ class ItemControllerTest {
     @Test
     void showItemForm() throws Exception {
         int wishlistId = 1;
-        mockMvc.perform(get("/item/{wishlistId}/addItem", wishlistId))
+        mockMvc.perform(get("/item/{wishlistId}/add", wishlistId))
                 .andExpect(status().isOk())
-                .andExpect(view().name("addItem"));
+                .andExpect(view().name("item/addItem"));
     }
 
     @Test
@@ -58,7 +58,7 @@ class ItemControllerTest {
         Item item = new Item();
         item.setName("Sample Item");
         int wishlistId = 123;
-        mockMvc.perform(post("/item/{wishlistId}/addItem", wishlistId))
+        mockMvc.perform(post("/item/{wishlistId}/add", wishlistId))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/wishlist/{wishlistId}"))
                 .andExpect(redirectedUrl("/wishlist/" + wishlistId));
@@ -78,11 +78,11 @@ class ItemControllerTest {
         when(itemService.findItemById(itemId)).thenReturn(mockItem);
 
         // Perform GET request and validate the response
-        mockMvc.perform(get("/item/update/{itemId}", itemId))
+        mockMvc.perform(get("/item/{itemId}/update", itemId))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editItem"))
-                .andExpect(model().attributeExists("showUpdateItemForm"))
-                .andExpect(model().attribute("showUpdateItemForm", mockItem));
+                .andExpect(view().name("item/editItem"))
+                .andExpect(model().attributeExists("item"))
+                .andExpect(model().attribute("item", mockItem));
     }
 
 
@@ -92,7 +92,7 @@ class ItemControllerTest {
         int itemId = 1;
         int wishlistId = 8;
 
-        mockMvc.perform(post("/item/update/{itemId}/{wishlistId}", itemId,wishlistId))
+        mockMvc.perform(post("/item/{itemId}/update", itemId))
                 .andExpect(redirectedUrl("/wishlist/" + wishlistId));
     }
 
@@ -104,7 +104,7 @@ class ItemControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(itemController).build();
 
         //Act & Assert
-        mockMvc.perform(post("/item/delete/{itemId}/{wishlistId}", itemId, wishlistId))
+        mockMvc.perform(post("/item/{itemId}/delete", itemId))
                 .andExpect(redirectedUrl("/wishlist/" + wishlistId));
 
         //verify

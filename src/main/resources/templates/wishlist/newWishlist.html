@@ -7,7 +7,7 @@
 <h1>Create a Wishlist</h1>
 
 
-<form th:object="${wishlist}" th:action="@{/wishlist/{userId}/save(userId=${userId})}" method="post">
+<form th:object="${wishlist}" th:action="@{/{userId}/wishlist/create(userId=${userId})}" method="post">
     <label for="name">Wishlist Name:</label>
     <input type="text" id="name" th:field="*{name}" required placeholder="Enter wishlist name"/>
     <button type="submit">Create Wishlist</button>

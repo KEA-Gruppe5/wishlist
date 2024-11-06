@@ -17,24 +17,21 @@ public class WishlistService {
     public WishlistService(WishlistRepository wishlistRepository) {
         this.wishlistRepository = wishlistRepository;
     }
-     public void addWishlist(Wishlist wishlist, int user_id) throws SQLException {
-         wishlistRepository.addWishList(wishlist, user_id);
+     public Wishlist createWishlist(Wishlist wishlist, int userId) throws SQLException {
+         return wishlistRepository.addWishlist(wishlist, userId);
     }
-    public Wishlist updateWishList(Wishlist wishlist, int id) throws SQLException {
-        return wishlistRepository.updateWishList(wishlist,id);
+    public Wishlist updateWishlist(Wishlist wishlist, int id) throws SQLException {
+        return wishlistRepository.updateWishlist(wishlist,id);
     }
-    public void deleteWishList(int id)throws SQLException{
-        wishlistRepository.deleteWishList(id);
-    }
-    public List<Wishlist> getAllWishlists() throws SQLException {
-        return wishlistRepository.findAllWishlists();
+    public void deleteWishlist(int id)throws SQLException{
+        wishlistRepository.deleteWishlist(id);
     }
     public List<Wishlist> getWishlistsByUserId(int userId) throws SQLException {
-        return wishlistRepository.allListByUser(userId);
+        return wishlistRepository.findAllListsByUserId(userId);
     }
 
-    public Wishlist oneListWithID(int id) throws SQLException{
-        return wishlistRepository.oneListWithId(id);
+    public Wishlist findWishlistById(int id) throws SQLException{
+        return wishlistRepository.findWishlistById(id);
     }
 
 }

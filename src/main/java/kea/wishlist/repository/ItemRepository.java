@@ -123,6 +123,6 @@ public class ItemRepository implements ItemRepositoryInterface {
                 return i;
             }
         }
-        throw new NoSuchElementException("No item found for wishlist with id " + id);
+        throw new NoSuchElementException("No item found with id " + id);
     }
 }

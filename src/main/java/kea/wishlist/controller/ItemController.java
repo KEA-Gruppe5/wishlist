@@ -23,7 +23,7 @@ public class ItemController {
     public String showItemForm(@PathVariable("wishlistId") String wishlistId, Model model) {
         model.addAttribute("showItemForm", new Item());
         model.addAttribute("wishlistId", wishlistId);
-        return "addItem";
+        return "item/addItem";
     }
 
     @PostMapping("/{wishlistId}/add")
@@ -37,7 +37,7 @@ public class ItemController {
     public String showUpdateItemForm(@PathVariable("itemId") int itemId, Model model) {
         Item item = itemService.findItemById(itemId);
         model.addAttribute("item", item);
-        return "editItem";
+        return "item/editItem";
     }
 
     //TODO should be put mapping

@@ -29,7 +29,7 @@ public class ItemService {
     }
 
     public Item updateItem(Item item, int id){
-        return itemRepository.updateItem(item,id);
+        return itemRepository.updateItem(item, id);
     }
 
     public Item findItemById(int id){
