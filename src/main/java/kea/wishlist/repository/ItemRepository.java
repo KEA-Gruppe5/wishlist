@@ -124,7 +124,7 @@ public class ItemRepository implements ItemRepositoryInterface {
             if (resultSet.next()) {
                 Item item = new Item();
                 item.setId(resultSet.getInt("id"));
-                        item.setId(resultSet.getInt("wishlist_id"));
+                        item.setWishlistId(resultSet.getInt("wishlist_id"));
                         item.setName(resultSet.getString("name"));
                         item.setDescription(resultSet.getString("description"));
                         item.setPrice(resultSet.getInt("price"));
