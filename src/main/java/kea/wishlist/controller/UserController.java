@@ -1,5 +1,7 @@
 package kea.wishlist.controller;
 
+import jakarta.servlet.http.HttpSession;
+import kea.wishlist.dto.UserDTO;
 import kea.wishlist.model.User;
 import kea.wishlist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,26 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @GetMapping("/login")
+    public String loginPage(Model model){
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("user", userDTO);
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String authenticate(@ModelAttribute("user") UserDTO userDTO, HttpSession httpSession,
+                               Model model) throws SQLException {
+        User authenticatedUser = userService.authenticate(userDTO);
+        if(authenticatedUser != null){
+            int userId = authenticatedUser.getId();
+            httpSession.setAttribute("userId", userId);
+            model.addAttribute("userId", userId);
+            return "redirect:/" + userId + "/wishlist";
+        }else {
+            model.addAttribute("error", "Invalid email or password");
+            return "login";
+        }
+    }
 
 }
