@@ -1,4 +1,4 @@
-package kea.wishlist.model;
+package kea.wishlist.dto;
 
 public record UserDTO (
         String firstName,

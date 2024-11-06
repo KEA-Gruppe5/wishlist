@@ -1,7 +1,7 @@
 package kea.wishlist.service;
 
-import kea.wishlist.model.WishlistModel;
-import kea.wishlist.repo.WishlistRepo;
+import kea.wishlist.model.Wishlist;
+import kea.wishlist.repository.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,31 +10,31 @@ import java.util.List;
 
 @Service
 public class WishlistService {
-    private final WishlistRepo wishlistRepo;
+    private final WishlistRepository wishlistRepository;
 
 
     @Autowired
-    public WishlistService(WishlistRepo wishlistRepo) {
-        this.wishlistRepo = wishlistRepo;
+    public WishlistService(WishlistRepository wishlistRepository) {
+        this.wishlistRepository = wishlistRepository;
     }
-     public void addWishlist(WishlistModel wishlist, int user_id) throws SQLException {
-         wishlistRepo.addWishList(wishlist, user_id);
+     public void addWishlist(Wishlist wishlist, int user_id) throws SQLException {
+         wishlistRepository.addWishList(wishlist, user_id);
     }
-    public WishlistModel updateWishList(WishlistModel wishlistModel, int id) throws SQLException {
-        return wishlistRepo.updateWishList(wishlistModel,id);
+    public Wishlist updateWishList(Wishlist wishlist, int id) throws SQLException {
+        return wishlistRepository.updateWishList(wishlist,id);
     }
     public void deleteWishList(int id)throws SQLException{
-        wishlistRepo.deleteWishList(id);
+        wishlistRepository.deleteWishList(id);
     }
-    public List<WishlistModel> getAllWishlists() throws SQLException {
-        return wishlistRepo.findAllWishlists();
+    public List<Wishlist> getAllWishlists() throws SQLException {
+        return wishlistRepository.findAllWishlists();
     }
-    public List<WishlistModel> getWishlistsByUserId(int userId) throws SQLException {
-        return wishlistRepo.allListByUser(userId);
+    public List<Wishlist> getWishlistsByUserId(int userId) throws SQLException {
+        return wishlistRepository.allListByUser(userId);
     }
 
-    public WishlistModel oneListWithID(int id) throws SQLException{
-        return wishlistRepo.oneListWithId(id);
+    public Wishlist oneListWithID(int id) throws SQLException{
+        return wishlistRepository.oneListWithId(id);
     }
 
 }

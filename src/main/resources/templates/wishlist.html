@@ -14,7 +14,7 @@
 
     <!-- New Item Button -->
     <div class="mb-4">
-        <a th:href="@{'/item/' + ${wishlistId} + '/addItem'}" class="btn btn-success">New Item</a>
+        <a th:href="@{'/item/' + ${wishlistId} + '/add'}" class="btn btn-success">New Item</a>
     </div>
 
     <div class="row">
@@ -28,8 +28,8 @@
                     <p class="card-text"><strong>Price:</strong> $<span th:text="${item.price}">0.00</span></p>
                     <a th:href="${item.url}" class="btn btn-primary">View Item</a>
                     <div class="mt-3">
-                        <a th:href="@{'/item/' + 'update/' +  ${item.getId()}}" class="btn btn-warning">Edit</a>
-                        <form th:action="@{'/item/delete/' + ${item.id} + '/' + ${item.wishlistId}}" method="post" style="display:inline;">
+                        <a th:href="@{'/item/'  +  ${item.id}+ '/update'}" class="btn btn-warning">Edit</a>
+                        <form th:action="@{'/item/' + ${item.id} + '/delete'}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>

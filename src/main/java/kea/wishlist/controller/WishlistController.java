@@ -1,8 +1,8 @@
 package kea.wishlist.controller;
 
-import kea.wishlist.model.ItemModel;
+import kea.wishlist.model.Item;
 import kea.wishlist.model.User;
-import kea.wishlist.model.WishlistModel;
+import kea.wishlist.model.Wishlist;
 import kea.wishlist.service.ItemService;
 import kea.wishlist.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class WishlistController {
     ///TODO change error msg to only show when the wishlist are NOT found at all
     @GetMapping("/{wishlistId}")
     public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid) throws SQLException {
-        List<ItemModel> list = itemService.getAllItems(wishlistid);
+        List<Item> list = itemService.getAllItems(wishlistid);
 //        if (list.isEmpty()){
 //            model.addAttribute("error", "No wishlist found for the provided ID.");
 //            return "error";
@@ -47,12 +47,12 @@ public class WishlistController {
     public String showCreateWishlistForm(@PathVariable int userId, Model model) {
         User user = new User();
         user.setId(userId);
-        model.addAttribute("wishlist", new WishlistModel());
+        model.addAttribute("wishlist", new Wishlist());
         model.addAttribute("userId", userId);
         return "newWishlist";
     }
     @PostMapping("/{userId}/save")
-    public String createWishlist(@PathVariable("userId") int user_id, @ModelAttribute WishlistModel wishlist, Model model) {
+    public String createWishlist(@PathVariable("userId") int user_id, @ModelAttribute Wishlist wishlist, Model model) {
         try {
             wishlistService.addWishlist(wishlist, user_id);
             model.addAttribute("message", "Wishlist created successfully with ID: " + wishlist.getId());
@@ -69,7 +69,7 @@ public class WishlistController {
     }
     @GetMapping("/{id}/update")
     public String updateForm(@PathVariable int id, Model model) throws SQLException {
-        WishlistModel wishlist = wishlistService.oneListWithID(id);
+        Wishlist wishlist = wishlistService.oneListWithID(id);
         if (wishlist == null){
             return "redirect:/error";
         }
@@ -77,7 +77,7 @@ public class WishlistController {
         return "updateWishListform";
     }
     @PutMapping("/{id}/update")
-    public String update(@PathVariable int id, @ModelAttribute WishlistModel updatedWishlist) throws SQLException {
+    public String update(@PathVariable int id, @ModelAttribute Wishlist updatedWishlist) throws SQLException {
         try {
             wishlistService.updateWishList(updatedWishlist, id);
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public class WishlistController {
     @GetMapping("/{userId}/main")
     public String getWishlistsByUserId(@PathVariable int userId, Model model) {
         try {
-            List<WishlistModel> wishlists = wishlistService.getWishlistsByUserId(userId);
+            List<Wishlist> wishlists = wishlistService.getWishlistsByUserId(userId);
 
             System.out.println("Wishlists for user " + userId + ": " + wishlists);
 

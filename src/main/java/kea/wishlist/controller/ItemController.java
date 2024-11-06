@@ -1,66 +1,58 @@
 package kea.wishlist.controller;
 
-import jakarta.servlet.http.HttpSession;
-import kea.wishlist.model.ItemModel;
-import kea.wishlist.model.User;
-import kea.wishlist.model.WishlistModel;
+import kea.wishlist.model.Item;
 import kea.wishlist.service.ItemService;
-import kea.wishlist.service.UserService;
-import kea.wishlist.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.sql.SQLException;
-import java.util.List;
 
 @Controller
 @RequestMapping("/item")
 public class ItemController {
-    @Autowired
-    private ItemService itemService;
-    private User user;
+
+    private final ItemService itemService;
 
     @Autowired
-    private UserService userService;
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
-    //View items is moved to wishlistController for correct endpoint
-
-    @GetMapping("/{wishlistId}/addItem")
-    public String showItemForm(@PathVariable("wishlistId") String wishlistId, Model model){
-        model.addAttribute("showAddFormItem", new ItemModel());
-        model.addAttribute("wishlistidFromGet", wishlistId);
+    @GetMapping("/{wishlistId}/add")
+    public String showItemForm(@PathVariable("wishlistId") String wishlistId, Model model) {
+        model.addAttribute("showItemForm", new Item());
+        model.addAttribute("wishlistId", wishlistId);
         return "addItem";
     }
 
-    @PostMapping("/{wishlistId}/addItem")
-    public String addItem(@ModelAttribute ItemModel item, @PathVariable("wishlistId") int wishlistId) throws SQLException {
+    @PostMapping("/{wishlistId}/add")
+    public String addItem(@ModelAttribute Item item, @PathVariable("wishlistId") int wishlistId) throws SQLException {
         itemService.addItem(item, wishlistId);
         return "redirect:/wishlist/{wishlistId}";
     }
 
 
-    @GetMapping("/update/{itemId}")
-    public String showUpdateItemForm(@PathVariable("itemId") int itemId, Model model){
-            ItemModel items = itemService.showUpdateItemForm(itemId);
-            model.addAttribute("showUpdateItemForm", items );
-         return "editItem";
+    @GetMapping("/{itemId}/update")
+    public String showUpdateItemForm(@PathVariable("itemId") int itemId, Model model) {
+        Item item = itemService.findItemById(itemId);
+        model.addAttribute("item", item);
+        return "editItem";
     }
 
     //TODO should be put mapping
-    @PostMapping("/update/{itemId}/{wishlistId}")
-    public String updateItem(@PathVariable("itemId") int itemId, @ModelAttribute ItemModel itemModel,@PathVariable("wishlistId") int wishlistId){
-        itemService.updateItem(itemModel,itemId);
-        return "redirect:/wishlist/{wishlistId}";
+    @PostMapping("/{itemId}/update")
+    public String updateItem(@PathVariable("itemId") int itemId, @ModelAttribute Item item) {
+        itemService.updateItem(item, itemId);
+        return "redirect:/wishlist/" + item.getWishlistId();
     }
 
 
     //TODO should be Deletemapping
-    @PostMapping("/delete/{itemId}/{wishlistId}")
-    public String deleteItem(@PathVariable int itemId, @PathVariable("wishlistId") int wishlistId) throws SQLException {
+    @PostMapping("/{itemId}/delete")
+    public String deleteItem(@PathVariable int itemId) {
+        Item item = itemService.findItemById(itemId);
         itemService.deleteItem(itemId);
-        return "redirect:/wishlist/{wishlistId}";
+        return "redirect:/wishlist/" + item.getWishlistId();
     }
 }
