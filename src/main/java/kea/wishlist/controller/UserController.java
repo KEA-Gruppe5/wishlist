@@ -64,4 +64,12 @@ public class UserController {
         }
     }
 
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession){
+        httpSession.removeAttribute("userId");
+        httpSession.invalidate();
+        return "redirect:/";
+    }
+
 }

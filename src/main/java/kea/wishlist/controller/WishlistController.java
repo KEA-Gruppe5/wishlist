@@ -30,13 +30,16 @@ public class WishlistController {
     ///TODO change error msg to only show when the wishlist are NOT found at all
     @GetMapping("/{wishlistId}")
     public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid,
-                               @PathVariable("userId") int userId) throws SQLException {
-        List<Item> list = itemService.getAllItems(wishlistid);
+                               HttpSession httpSession) throws SQLException {
+        if(httpSession.getAttribute("userId")!=null) {
+            List<Item> list = itemService.getAllItems(wishlistid);
 //        if (list.isEmpty()){
 //            model.addAttribute("error", "No wishlist found for the provided ID.");
 //            return "error";
 //        }
-        model.addAttribute("findAllItems", list);
+            model.addAttribute("userId", httpSession.getAttribute("userId"));
+            model.addAttribute("findAllItems", list);
+        }
         return "wishlist/wishlist";
     }
 
@@ -86,14 +89,14 @@ public class WishlistController {
     public String getWishlistsByUserId(@PathVariable int userId, Model model,
                                        HttpSession httpSession) {
         try {
-            System.out.println(httpSession.getAttribute("userId"));
-            List<Wishlist> wishlists = wishlistService.getWishlistsByUserId(userId);
-            model.addAttribute("wishlists", wishlists);
-            model.addAttribute("userId", userId);
-            if (wishlists.isEmpty()) {
-                model.addAttribute("message", "No wishlists found for this user.");
+            if(httpSession.getAttribute("userId")!=null) {
+                List<Wishlist> wishlists = wishlistService.getWishlistsByUserId(userId);
+                model.addAttribute("wishlists", wishlists);
+                model.addAttribute("userId", userId);
+                if (wishlists.isEmpty()) {
+                    model.addAttribute("message", "No wishlists found for this user.");
+                }
             }
-            return "wishlist/allWishlists";
 
         } catch (SQLException e) {
             // Add a log statement here to confirm the catch block is reached
@@ -103,7 +106,7 @@ public class WishlistController {
             model.addAttribute("error", "An error occurred while fetching the wishlists: " + e.getMessage());
             return "error";  // Return the error page if an exception occurs
         }
-
+        return "wishlist/allWishlists";
     }
 
 }
