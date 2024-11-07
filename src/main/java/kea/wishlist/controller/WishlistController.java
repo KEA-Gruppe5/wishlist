@@ -57,10 +57,11 @@ public class WishlistController {
         }
         return "redirect:/" + userId + "/wishlist";
     }
-    @DeleteMapping("/{wishlistId}/delete")
-    public String deleteWishlist(@PathVariable int wishlistId) throws SQLException {
+    @PostMapping("/{wishlistId}/delete")
+    public String deleteWishlist(@PathVariable int wishlistId, @PathVariable int userId) throws SQLException {
         wishlistService.deleteWishlist(wishlistId);
-        return "redirect:/allWishlists";
+
+        return "redirect:/" + userId + "/wishlist";
     }
     @GetMapping("/{wishlistId}/update")
     public String editForm(@PathVariable int wishlistId, Model model) throws SQLException {
@@ -73,12 +74,14 @@ public class WishlistController {
     }
     @PutMapping("/{wishlistId}/update")
     public String update(@PathVariable int wishlistId, @ModelAttribute Wishlist updatedWishlist) throws SQLException {
+        int userId;
         try {
             wishlistService.updateWishlist(updatedWishlist, wishlistId);
+            userId = updatedWishlist.getUserId();
         } catch (SQLException e) {
             return "redirect:/error";
         }
-        return "redirect:/{userId}/wishlist";
+        return "redirect:/" + userId + "/wishlist";
     }
 
     // Display all wishlists for a specific user
