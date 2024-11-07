@@ -29,7 +29,8 @@ public class WishlistController {
 
     ///TODO change error msg to only show when the wishlist are NOT found at all
     @GetMapping("/{wishlistId}")
-    public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid) throws SQLException {
+    public String findAllItems(Model model, @PathVariable("wishlistId") int wishlistid,
+                               @PathVariable("userId") int userId) throws SQLException {
         List<Item> list = itemService.getAllItems(wishlistid);
 //        if (list.isEmpty()){
 //            model.addAttribute("error", "No wishlist found for the provided ID.");

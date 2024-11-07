@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Wishlists</title>
-    <link rel="stylesheet" href="/main_style.css">
+<!--    <link rel="stylesheet" href="/main_style.css">-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
 
@@ -10,7 +12,10 @@
 
 <ul>
     <!-- Iterate over each wishlist item and display its name -->
-    <li th:each="wishlist : ${wishlists}" th:text="${wishlist.name}">Wishlist Name</li>
+    <li th:each="wishlist : ${wishlists}">
+        <a th:href="@{/{userId}/wishlist/{wishlistId}(userId=${userId}, wishlistId=${wishlist.id})}"
+           th:text="${wishlist.name}">Wishlist Name</a>
+    </li>
 </ul>
 
 <!-- Link to create a new wishlist, passing the userId dynamically -->

@@ -23,6 +23,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/")
+    public String index(Model model, HttpSession httpSession){
+        model.addAttribute("userId", httpSession.getAttribute("userId"));
+        return "index";
+    }
+
     @GetMapping("/register")
     public String register(Model model){
         User user = new User();
