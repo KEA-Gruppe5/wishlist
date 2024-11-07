@@ -32,7 +32,7 @@ public class ItemService {
         return itemRepository.updateItem(item, id);
     }
 
-    public Item findItemById(int id){
+    public Item findItemById(int id) throws SQLException {
         return itemRepository.findItemById(id);
     }
 

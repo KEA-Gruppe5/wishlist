@@ -33,11 +33,20 @@ class ItemControllerTest {
     private MockHttpSession session;
     @Autowired
     private ItemController itemController;
+    private Item item;
+    private MockHttpSession mockSession;
+    private int userId;
+    private int wishlistId;
 
 
     @BeforeEach
     void setUp() {
+        item = new Item(1,2,"testName","testDesc","testUrl",23,"testImg");
 
+        userId = 3;
+        wishlistId = item.getWishlistId();
+        mockSession = new MockHttpSession();
+        mockSession.setAttribute("userId", 3);
     }
 
     @AfterEach
@@ -55,13 +64,13 @@ class ItemControllerTest {
 
     @Test
     void addItem() throws Exception {
-        Item item = new Item();
-        item.setName("Sample Item");
-        int wishlistId = 123;
-        mockMvc.perform(post("/item/{wishlistId}/add", wishlistId))
+
+        mockMvc.perform(post("/item/{wishlistId}/add",item.getWishlistId())
+                .session(mockSession))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/wishlist/{wishlistId}"))
-                .andExpect(redirectedUrl("/wishlist/" + wishlistId));
+                .andExpect(view().name("redirect:/" + userId + "/wishlist/" + wishlistId))
+                .andExpect(redirectedUrl("/" + userId + "/wishlist/" + wishlistId));
+        verify(itemService, times(1)).addItem(any(Item.class), eq(wishlistId));
 
     }
 
@@ -88,26 +97,32 @@ class ItemControllerTest {
 
     @Test
     void updateItem() throws Exception {
-        //assert
-        int itemId = 1;
-        int wishlistId = 8;
 
-        mockMvc.perform(post("/item/{itemId}/update", itemId))
-                .andExpect(redirectedUrl("/wishlist/" + wishlistId));
+        when(itemService.updateItem(item, item.getId())).thenReturn(item);
+        when(itemService.findItemById(item.getId())).thenReturn(item);
+
+        mockMvc.perform(post("/item/{itemId}/update",item.getId())
+                .session(mockSession)
+                .flashAttr("item",item))
+                .andExpect(view().name("redirect:/" + userId + "/wishlist/" + wishlistId))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/" + userId + "/wishlist/" + wishlistId));
+
+        verify(itemService, times(1)).updateItem(any(Item.class), eq(item.getId()));
+        verify(itemService, times(1)).findItemById(item.getId());
     }
 
     @Test
     void deleteItem() throws Exception {
-        //assert
-        int itemId = 1;
-        int wishlistId = 8;
-        mockMvc = MockMvcBuilders.standaloneSetup(itemController).build();
+        when(itemService.findItemById(anyInt())).thenReturn(item);
+        when(itemService.deleteItem(anyInt())).thenReturn(String.valueOf(true));
 
-        //Act & Assert
-        mockMvc.perform(post("/item/{itemId}/delete", itemId))
-                .andExpect(redirectedUrl("/wishlist/" + wishlistId));
+        mockMvc.perform(post("/item/{itemId}/delete",item.getId())
+                .session(mockSession))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/" + userId + "/wishlist/" + wishlistId))
+                .andExpect(redirectedUrl("/" + userId + "/wishlist/" + wishlistId));
 
-        //verify
-        verify(itemService, times(1)).deleteItem(itemId);
+        verify(itemService, times(1)).deleteItem(item.getId());
     }
 }

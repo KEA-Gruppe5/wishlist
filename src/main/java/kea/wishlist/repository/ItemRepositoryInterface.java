@@ -10,5 +10,5 @@ public interface ItemRepositoryInterface {
     Item updateItem(Item item, int id);
 
     boolean deleteItem(int id) throws SQLException;
-    Item findItemById (int id);
+    Item findItemById (int id) throws SQLException;
 }
