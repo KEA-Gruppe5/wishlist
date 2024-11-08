@@ -6,7 +6,7 @@
     <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
-
+<div th:if="${userId}">
 <h1>Your Wishlists</h1>
 
 <ul>
@@ -26,8 +26,14 @@
     </li>
 </ul>
 
-<!-- Link to create a new wishlist, passing the userId dynamically -->
-<a th:href="@{/{userId}/wishlist/create(userId=${userId})}" class="btn btn-success">Create a New Wishlist</a>
 
+  <div>
+<a th:href="@{/{userId}/wishlist/create(userId=${userId})}">Create a New Wishlist</a>
+</div>
+
+
+<div th:if="${userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
 </body>
 </html>
