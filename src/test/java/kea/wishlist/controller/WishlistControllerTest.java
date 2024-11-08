@@ -61,19 +61,42 @@ class WishlistControllerTest {
 
 
     @Test
-    void findAllItems() {
+    void updateForm() throws Exception {
+        int userId = 1;
+        int wishlistId = 1;
+        Wishlist wishlist = new Wishlist(userId, "Wishlist to Update");
+        when(wishlistService.findWishlistById(wishlistId)).thenReturn(wishlist);
+
+        mockMvc.perform(get("/{userId}/wishlist/{wishlistId}/edit", userId, wishlistId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("wishlist/editWishlist"))
+                .andExpect(model().attributeExists("wishlist"))
+                .andExpect(model().attribute("wishlist", wishlist));
+
+        verify(wishlistService, times(1)).findWishlistById(wishlistId);
     }
 
-
-    @Test
-    void updateForm() {
-    }
 
     @Test
     void update() {
     }
 
     @Test
+    void edit(){
+
+    }
+
+
+    @Test
     void getWishlistsByUserId() {
     }
+
+    @Test
+    void findAllItems() {
+    }
+
+
+
+
+
 }
