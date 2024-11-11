@@ -53,7 +53,7 @@ class WishlistControllerTest {
         int wishlistId = 1;
         doNothing().when(wishlistService).deleteWishlist(wishlistId);
 
-        mockMvc.perform(delete("/{userId}/wishlist/{wishlistId}/delete", userId, wishlistId))
+        mockMvc.perform(post("/{userId}/wishlist/{wishlistId}/delete", userId, wishlistId))
                 .andExpect(status().is3xxRedirection());
 
         verify(wishlistService, times(1)).deleteWishlist(wishlistId);
@@ -67,7 +67,7 @@ class WishlistControllerTest {
         Wishlist wishlist = new Wishlist(userId, "Wishlist to Update");
         when(wishlistService.findWishlistById(wishlistId)).thenReturn(wishlist);
 
-        mockMvc.perform(get("/{userId}/wishlist/{wishlistId}/edit", userId, wishlistId))
+        mockMvc.perform(get("/{userId}/wishlist/{wishlistId}/update", userId, wishlistId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishlist/editWishlist"))
                 .andExpect(model().attributeExists("wishlist"))
