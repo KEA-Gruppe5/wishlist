@@ -40,4 +40,8 @@ public class ItemService {
         itemRepository.addItem(item, wishlistId);
         return item;
     }
+
+    public void reserveGift(int id) throws SQLException {
+        itemRepository.reserveGift(id);
+    }
 }

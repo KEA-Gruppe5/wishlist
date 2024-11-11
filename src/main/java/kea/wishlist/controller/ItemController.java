@@ -5,6 +5,7 @@ import kea.wishlist.model.Item;
 import kea.wishlist.model.User;
 import kea.wishlist.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,5 +60,14 @@ public class ItemController {
         int wishlistId = itemService.findItemById(itemId).getWishlistId();
         Integer userId = (Integer) session.getAttribute("userId");
         itemService.deleteItem(itemId);
-        return "redirect:/" + userId + "/wishlist/" + wishlistId;    }
+        return "redirect:/" + userId + "/wishlist/" + wishlistId;
+    }
+
+    @PostMapping("/{itemId}/reserve")
+    public String reserveItem(@PathVariable int itemId, HttpSession session) throws SQLException {
+        int wishlistId = itemService.findItemById(itemId).getWishlistId();
+        Integer userId = (Integer) session.getAttribute("userId");
+        itemService.reserveGift(itemId);
+        return "redirect:/" + userId + "/wishlist/" + wishlistId;
+    }
 }
