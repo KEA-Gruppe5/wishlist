@@ -24,15 +24,15 @@ public class ItemRepository implements ItemRepositoryInterface {
         itemList.clear();
         try (Connection connection = connectionManager.getConnection()) {
 
-            String query = "SELECT wishlists.id AS wishlist_Id, " +  // Explicitly selecting as 'wishlistId'
+            String query = "SELECT wishlists.id AS wishlist_Id, " +  
                     "wishlists.user_Id, " +
                     "items.id, " +
                     "items.name, " +
                     "items.description, " +
                     "items.price, " +
                     "items.link, " +
-                    "items.img_url, " +  // Comma added here
-                    "items.reserve_gift " +  // Comma added to correct previous issue
+                    "items.img_url, " +  
+                    "items.reserve_gift " +  
                     "FROM wishlists " +
                     "JOIN items ON wishlists.id = items.wishlist_Id " +
                     "WHERE wishlists.id = ?";
@@ -43,9 +43,7 @@ public class ItemRepository implements ItemRepositoryInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Item item = new Item();
-                // Set wishlist-related details if needed (e.g., wishlistName)
-
-                // Populate the item model with data from the result set
+                
                 item.setId(resultSet.getInt("id"));
                 item.setWishlistId(resultSet.getInt("wishlist_id"));
                 item.setName(resultSet.getString("name"));
