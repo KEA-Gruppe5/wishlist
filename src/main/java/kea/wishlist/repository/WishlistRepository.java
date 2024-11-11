@@ -73,7 +73,6 @@ public class WishlistRepository implements WishListRepositoryInterface {
             //execute
             int rowsAffected = deleteList.executeUpdate();
             return rowsAffected > 0;
-
         }
     }
 
@@ -102,7 +101,6 @@ public class WishlistRepository implements WishListRepositoryInterface {
     public List<Wishlist> findAllListsByUserId(int userId) throws SQLException {
         String findQuery = "SELECT * FROM WISHLISTS WHERE user_id = ?";
         List<Wishlist> wishlists = new ArrayList<>();
-
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement findList = connection.prepareStatement(findQuery)) {
 
@@ -129,7 +127,6 @@ public class WishlistRepository implements WishListRepositoryInterface {
 
             findList.setInt(1,id);
             ResultSet resultSet = findList.executeQuery();
-
             if (resultSet.next()){
                 Wishlist wishList = new Wishlist();
                 wishList.setId(resultSet.getInt("id"));

@@ -76,7 +76,6 @@ class WishlistControllerTest {
         verify(wishlistService, times(1)).findWishlistById(wishlistId);
     }
 
-
     @Test
     void update() {
     }
