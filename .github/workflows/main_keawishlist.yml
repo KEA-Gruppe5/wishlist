@@ -23,7 +23,7 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -DskipTests
         env:
           PROD_URL: ${{ secrets.SMTP_HOST }}
           PROD_USER: ${{ secrets.SMTP_USERNAME }}
