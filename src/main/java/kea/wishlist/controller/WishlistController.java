@@ -75,6 +75,7 @@ public class WishlistController {
         model.addAttribute("wishlist", wishlist);
         return "wishlist/editWishlist";
     }
+
     @PutMapping("/{wishlistId}/update")
     public String update(@PathVariable int wishlistId, @ModelAttribute Wishlist updatedWishlist) throws SQLException {
         int userId;

@@ -15,6 +15,7 @@
     <form th:object="${user}" th:action="@{/register}" method="post">
 
 
+
         <label for="firstName">Enter first name</label>
         <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name">
 
@@ -28,8 +29,10 @@
         <input type="text" id="age" th:field="*{age}" placeholder="age">
 
         <label for="password">Enter password</label>
-        <input type="password" id="password" th:field="*{password}" placeholder="password">
-
+        <input type="password" id="password" th:field="*{password}" placeholder="password"
+               pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
+               title="Password must be at least 8 characters long and contain a mix of uppercase, lowercase, numbers, and special characters."
+               required />
 
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Submit</button>
