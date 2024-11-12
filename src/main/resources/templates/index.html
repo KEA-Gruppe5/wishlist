@@ -6,14 +6,21 @@
     <link rel="icon" href="/images/gold-star.jpg" type="image/jpg">
     <title>Wish list</title>
     <div th:replace="~{fragments/nav :: nav}"></div>
-<!--    <link rel="stylesheet" href="/main_style.css">-->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css"> <!-- Link to the new external CSS file -->
 </head>
+
 <body>
 
 <div id="myText">
     <h1>Wishlist project homepage</h1>
-    <p>WIP</p>
+    <p>Currently it is possible:</p>
+    <ul>
+        <li>to register a user and receive an email upon registration;</li>
+        <li>to log in;</li>
+        <li>to create, update, delete wishlist;</li>
+        <li>to see, update, delete, reserve items in a wishlist.</li>
+    </ul>
 </div>
 <div class="nav-item">
     <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit()">Debug Login</button>
@@ -30,10 +37,10 @@
         document.getElementById('loginForm').submit();
     }
 </script>
-<footer>
-    <p><a href="">Contract us at fakeEmail@gmail.com</a></p>
-    <p><a href="">VisitDenmark © 2024</a></p>
 
+<footer>
+    <p><a href="">Contact us at fakeEmail@gmail.com</a></p>
+    <p><a href="">VisitDenmark © 2024</a></p>
 </footer>
 
 </body>
