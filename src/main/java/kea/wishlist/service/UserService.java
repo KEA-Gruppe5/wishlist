@@ -29,17 +29,20 @@ public class UserService {
     }
 
     public User saveUser(User user) throws SQLException {
+        logger.info("saveUser is called.");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         checkIfUserAlreadyExists(user.getEmail());
         User savedUser = userRepository.addUser(user);
         logger.info("Password:" + savedUser.getPassword());
         if(savedUser!=null &&  savedUser.getId()!=0){
             emailService.sendEmail(savedUser.getEmail());
+            logger.info("Email is sent.");
         }
         return savedUser;
     }
 
     public void checkIfUserAlreadyExists(String email) throws SQLException {
+        logger.info("checkIfUserAlreadyExists is called.");
         User foundByEmailUser = userRepository.findUserByEmail(email);
         if(foundByEmailUser != null){
             throw new EmailAlreadyExistsException();
