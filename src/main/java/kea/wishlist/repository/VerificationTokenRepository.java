@@ -37,4 +37,39 @@ public class VerificationTokenRepository implements VerificationTokenRepositoryI
         logger.info("add new token: " + token);
         return token;
     }
+
+    @Override
+    public VerificationToken findVerificationTokenByToken(String token) throws SQLException {
+        try (Connection connection = connectionManager.getConnection()) {
+            String query = "SELECT * FROM Wishlist.token WHERE token = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, token);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                VerificationToken verificationToken = new VerificationToken();
+                verificationToken.setId(resultSet.getInt("id"));
+                verificationToken.setUserId(resultSet.getInt("user_id"));
+                verificationToken.setToken(resultSet.getString("token"));
+                verificationToken.setUsed(resultSet.getBoolean("is_used"));
+                return verificationToken;
+            }
+            return null;
+        }
+    }
+
+    public boolean useToken(int id) throws SQLException {
+        try (Connection connection = connectionManager.getConnection()){
+            String query = "UPDATE token SET is_used = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1,true);
+            preparedStatement.setInt(2, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if(rowsAffected == 1){
+                logger.info("Token was used.");
+                return true;
+            }
+        }
+        return false;
+    }
 }

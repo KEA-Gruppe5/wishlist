@@ -5,12 +5,12 @@ import kea.wishlist.dto.UserDTO;
 import kea.wishlist.model.User;
 import kea.wishlist.service.PasswordValidator;
 import kea.wishlist.service.UserService;
+import kea.wishlist.service.VerificationService;
+import kea.wishlist.util.TokenIsAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
@@ -18,11 +18,14 @@ import java.sql.SQLException;
 public class UserController {
 
     private final UserService userService;
+    private final VerificationService verificationService;
     private final PasswordValidator passwordValidator;
 
     @Autowired
-    public UserController(UserService userService, PasswordValidator passwordValidator) {
+    public UserController(UserService userService, VerificationService verificationService,
+                          PasswordValidator passwordValidator) {
         this.userService = userService;
+        this.verificationService = verificationService;
         this.passwordValidator = passwordValidator;
     }
 
@@ -75,6 +78,24 @@ public class UserController {
         httpSession.removeAttribute("userId");
         httpSession.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/{userId}/verify")
+    public String verifyUser(@RequestParam("token") String token, @PathVariable("userId") int userId,
+                             Model model) throws SQLException {
+       //model.addAttribute("message", );
+//        if(verificationService.enableUser(userId, token)){
+//            model.addAttribute("isEnabled", true);
+//        }else{
+//            return "redirect:/error";
+//        }
+        try{
+            String message = verificationService.enableUser(userId, token);
+            model.addAttribute("message", message);
+        }catch(TokenIsAlreadyUsedException e){
+            model.addAttribute("message", e.getMessage());
+        }
+        return "user/verification";
     }
 
 }

@@ -20,6 +20,10 @@ public class VerificationToken {
         this.isUsed = false;
     }
 
+    public VerificationToken() {
+
+    }
+
     @Override
     public String toString() {
         return "VerificationToken{" +

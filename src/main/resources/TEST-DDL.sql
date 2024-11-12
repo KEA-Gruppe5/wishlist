@@ -9,6 +9,7 @@ CREATE TABLE users
     age        INT,
     email      VARCHAR(255) UNIQUE,
     password   VARCHAR(255),
+    is_enabled BOOLEAN,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

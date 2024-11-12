@@ -2,6 +2,7 @@ package kea.wishlist.service;
 
 import kea.wishlist.dto.UserDTO;
 import kea.wishlist.model.User;
+import kea.wishlist.model.VerificationToken;
 import kea.wishlist.repository.UserRepository;
 import kea.wishlist.util.EmailAlreadyExistsException;
 import kea.wishlist.util.PasswordEncoder;
@@ -38,8 +39,9 @@ public class UserService {
         User savedUser = userRepository.addUser(user);
         logger.info("Password:" + savedUser.getPassword());
         if(savedUser.getId() != 0){
-            emailService.sendEmail(savedUser.getEmail());
-            verificationService.createToken(savedUser.getId());
+            VerificationToken token = verificationService.createToken(savedUser.getId());
+            String verificationLink = verificationService.createLink(savedUser.getId(), token.getToken());
+            emailService.sendEmail(savedUser, verificationLink);
             logger.info("Email is sent.");
         }
         return savedUser;

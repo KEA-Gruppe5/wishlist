@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Verification link</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/user-styles.css" rel="stylesheet">
+    <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
-<p th:text="${message}">verification link</p>
+
+<p th:text="${message}">
+</p>
 
 <a th:href="@{/}">Go back to Home</a>
+<br>
+<a th:href="@{/login}">Login</a>
 
 </body>
 </html>

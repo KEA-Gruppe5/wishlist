@@ -52,14 +52,14 @@ class UserServiceTest {
     void testSaveUser() throws SQLException {
 
         when(userRepository.addUser(any())).thenReturn(user);
-        doNothing().when(emailService).sendEmail(anyString());
+        doNothing().when(emailService).sendEmail(any(User.class), any(String.class));
         User savedUser = userService.saveUser(user);
 
         assertNotNull(savedUser);
         assertEquals("first name", savedUser.getFirstName(), "First names are not equal.");
         assertEquals("encodedPassword", savedUser.getPassword(), "Password is not encoded.");
         verify(userRepository, times(1)).addUser(user);
-        verify(emailService, times(1)).sendEmail(any(String.class));
+        verify(emailService, times(1)).sendEmail(any(User.class), any(String.class));
         verify(verificationService, times(1)).createToken(any(Integer.class));
         logger.info("testSaveUser - " + savedUser);
     }

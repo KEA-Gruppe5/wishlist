@@ -24,13 +24,14 @@ public class UserRepository implements UserRepositoryInterface {
     @Override
     public User addUser(User user) throws SQLException {
         try(Connection connection = connectionManager.getConnection()){
-            String query = "INSERT INTO Wishlist.users (first_name, last_name, age, email, password) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Wishlist.users (first_name, last_name, age, email, password, is_enabled) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setInt(3, user.getAge());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setBoolean(6, false);
             int rowsAffected = preparedStatement.executeUpdate();
             if(rowsAffected > 0){
                 try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
@@ -69,6 +70,7 @@ public class UserRepository implements UserRepositoryInterface {
                 user.setEmail(resultSet.getString("email"));
                 user.setAge(resultSet.getInt("age"));
                 user.setPassword(resultSet.getString("password"));
+                user.setEnabled(resultSet.getBoolean("is_enabled"));
                 return user;
             }
             return null;
@@ -76,5 +78,18 @@ public class UserRepository implements UserRepositoryInterface {
     }
 
 
-
+    public boolean enableUser(int userId) throws SQLException {
+        try (Connection connection = connectionManager.getConnection()){
+            String query = "UPDATE users SET is_enabled = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1,true);
+            preparedStatement.setInt(2, userId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if(rowsAffected == 1){
+                logger.info("User was enabled.");
+                return true;
+            }
+        }
+        return false;
+    }
 }

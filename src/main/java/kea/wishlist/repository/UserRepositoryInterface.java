@@ -9,4 +9,5 @@ public interface UserRepositoryInterface {
     User updateUser(User user, int id);
     boolean deletedUser(int id) throws SQLException;
     User findUserByEmail (String email) throws SQLException;
+
 }
