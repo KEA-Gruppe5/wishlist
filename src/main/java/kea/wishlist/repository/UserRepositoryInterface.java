@@ -1,4 +1,4 @@
-package kea.wishlist.repo;
+package kea.wishlist.repository;
 
 import kea.wishlist.model.User;
 
@@ -9,5 +9,4 @@ public interface UserRepositoryInterface {
     User updateUser(User user, int id);
     boolean deletedUser(int id) throws SQLException;
     User findUserByEmail (String email) throws SQLException;
-
 }

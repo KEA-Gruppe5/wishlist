@@ -1,4 +1,4 @@
-package kea.wishlist.repo;
+package kea.wishlist.repository;
 
 import kea.wishlist.model.User;
 import org.junit.jupiter.api.BeforeEach;

@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Item</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
 <div class="container mt-5">
     <h2>Edit Item</h2>
 
     <!-- Form for editing an item -->
-    <form th:action="@{/item/update/{itemId}/{wishlistId}(itemId=${showUpdateItemForm.id}, wishlistId=${showUpdateItemForm.wishlistId})}"
-          th:object="${showUpdateItemForm}"
-          method="post">        <input type="hidden" th:field="*{id}" />
+    <form th:action="@{/item/{itemId}/update(itemId=${item.id})}"
+          th:object="${item}"
+          method="post">        <input type="hidden" th:field="*{wishlistId}" />
 
         <div class="form-group">
             <label for="name">Name:</label>
@@ -41,7 +42,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Update Item</button>
-        <a href="#" th:href="@{'/item/' + ${showUpdateItemForm.getWishlistId()}}" class="btn btn-secondary">Cancel</a>
+        <a href="#" th:href="@{'/wishlist/' + ${item.wishlistId}}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 

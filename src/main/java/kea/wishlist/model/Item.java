@@ -1,6 +1,6 @@
 package kea.wishlist.model;
 
-public class ItemModel {
+public class Item {
     private int id;
     private int wishlistId;
     private String name;
@@ -9,7 +9,7 @@ public class ItemModel {
     private double price;
     private String imgUrl;
 
-    public ItemModel(int id, int wishlistId, String name, String description, String url, double price, String imgUrl) {
+    public Item(int id, int wishlistId, String name, String description, String url, double price, String imgUrl) {
         this.id = id;
         this.wishlistId = wishlistId;
         this.name = name;
@@ -35,7 +35,7 @@ public class ItemModel {
         this.id = id;
     }
 
-    public ItemModel(){}
+    public Item(){}
 
     public String getName() {
         return name;
@@ -77,4 +77,16 @@ public class ItemModel {
         this.imgUrl = imgUrl;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", wishlistId=" + wishlistId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", price=" + price +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
 }
