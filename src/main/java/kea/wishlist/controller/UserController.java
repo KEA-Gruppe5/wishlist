@@ -41,7 +41,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String saveUser(@ModelAttribute User user) throws SQLException {
-        if (!passwordValidator.isValid(user.getPassword())) {
+        if (passwordValidator.isValid(user.getPassword())) {
             userService.saveUser(user);
         }
         return "redirect:/login";
