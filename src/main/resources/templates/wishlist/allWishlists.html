@@ -2,33 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Wishlists</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <div th:replace="~{fragments/nav :: nav}"></div>
+    <link href="/allWishList_style.css" rel="stylesheet">
+
 </head>
 <body>
 <div th:if="${session.userId != null}">
 <h1>Your Wishlists</h1>
 
-<ul>
-    <!-- Iterate over each wishlist item and display its name -->
-    <li th:each="wishlist : ${wishlists}">
-        <a th:href="@{/{userId}/wishlist/{wishlistId}(userId=${userId}, wishlistId=${wishlist.id})}"
-           th:text="${wishlist.name}">Wishlist Name</a>
 
-        <a th:href="@{/{userId}/wishlist/{wishlistId}/update(userId=${userId}, wishlistId=${wishlist.id})}"
-           class="btn btn-primary btn-sm">Edit</a>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<div th:if="${userId}">
 
-        <form th:action="@{/{userId}/wishlist/{wishlistId}/delete(userId=${userId}, wishlistId=${wishlist.id})}" method="post">
-            <input type="hidden" name="_method" value="delete"/>
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-        </form>
+    <h1>My Wishlists</h1>
 
-    </li>
-</ul>
+    <ul class="wishlist-container">
+        <li th:each="wishlist : ${wishlists}">
+            <a th:href="@{/{userId}/wishlist/{wishlistId}(userId=${userId}, wishlistId=${wishlist.id})}"
+               th:text="${wishlist.name}">Wishlist Name</a>
 
+            <a th:href="@{/{userId}/wishlist/{wishlistId}/update(userId=${userId}, wishlistId=${wishlist.id})}"
+               class="btn btn-primary btn-sm">Edit</a>
 
-  <div>
-<a th:href="@{/{userId}/wishlist/create(userId=${userId})}">Create a New Wishlist</a>
+            <form th:action="@{/{userId}/wishlist/{wishlistId}/delete(userId=${userId}, wishlistId=${wishlist.id})}" method="post">
+                <input type="hidden" name="_method" value="post"/>
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </li>
+    </ul>
+
+    <div>
+        <a th:href="@{/{userId}/wishlist/create(userId=${userId})}" class="btn btn-success">Create a New Wishlist</a>
+    </div>
 </div>
 
 </div>

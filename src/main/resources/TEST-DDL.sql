@@ -32,13 +32,13 @@ CREATE TABLE wishlists
 
 CREATE TABLE items
 (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    wishlist_id  INT,
-    name         VARCHAR(255),
-    description  VARCHAR(255),
-    price        DOUBLE,
-    link         VARCHAR(255),
-    img_url      VARCHAR(255),
-    reserve_item BOOLEAN,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    wishlist_id INT,
+    name        VARCHAR(255),
+    description VARCHAR(255),
+    price DOUBLE,
+    link        VARCHAR(255),
+    img_url     VARCHAR(255),
+    reserve_gift BOOLEAN,
     FOREIGN KEY (wishlist_id) REFERENCES wishlists (id) ON DELETE CASCADE
 );
