@@ -5,44 +5,45 @@
     <meta charset="UTF-8">
     <title>Add New Item</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
+<div th:replace="~{fragments/nav :: nav}"> </div>
 
 <body>
 
-
-
 <div class="form-container">
     <h1>Add New Item to Your Wishlist</h1>
+
+    <form th:object="${showItemForm}" th:action="@{/scrape/item}" method="post">
+        <label for="url">Enter URL</label>
+        <input type="text" id="url" th:field="*{url}" placeholder="URL">
+        <small id="urlHelp" class="form-text text-muted">Only Proshop.dk works for auto-fetch.</small>
+
+        <button type="submit" name="fetchDetails" class="btn btn-secondary mt-2">Fetch Product</button>
+    </form>
 
     <form th:object="${showItemForm}" th:action="@{/item/{wishlistId}/add(wishlistId=${wishlistId})}" method="post">
 
         <input type="hidden" th:field="*{wishlistId}" />
 
-        <label for="name">Enter product name</label>
-        <input type="text" id="name" th:field="*{name}" placeholder="Name">
+        <label for="name">Product Name</label>
+        <input type="text" id="name" th:field="*{name}" placeholder="Name" value="${showItemForm.name}">
 
-        <label for="description">Enter description</label>
-        <input type="text" id="description" th:field="*{description}" placeholder="Description">
+        <label for="description">Description</label>
+        <input type="text" id="description" th:field="*{description}" placeholder="Description" value="${showItemForm.description}">
 
-        <label for="url">Enter URL</label>
-        <input type="text" id="url" th:field="*{url}" placeholder="URL">
-
-        <label for="imgUrl">Enter image URL</label>
-        <input type="text" id="imgUrl" th:field="*{imgUrl}" placeholder="Image URL">
+        <label for="imgUrl">Image URL</label>
+        <input type="text" id="imgUrl" th:field="*{imgUrl}" placeholder="Image URL" value="${showItemForm.imgUrl}">
 
         <div id="priceField">
-            <label for="price">Enter price</label>
-            <input type="text" id="price" th:field="*{price}" placeholder="Price in DKK">
+            <label for="price">Price</label>
+            <input type="text" id="price" th:field="*{price}" placeholder="Price in DKK" value="${showItemForm.price}">
         </div>
 
-        <div class="button-group">
+        <div class="button-group mt-3">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-
     </form>
 </div>
 
 </body>
-
 </html>
