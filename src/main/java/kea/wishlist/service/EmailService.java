@@ -21,6 +21,7 @@ public class EmailService {
         message.setSubject("Confirm your registration at Wishlist.kea");
         message.setText("*verification link*");
         javaMailSender.send(message);
+
     }
 
 

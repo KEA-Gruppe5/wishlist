@@ -26,5 +26,6 @@ CREATE TABLE items (
                        price DOUBLE,
                        link VARCHAR(255),
                        img_url VARCHAR(255),
+                       reserve_item BOOLEAN,
                        FOREIGN KEY (wishlist_id) REFERENCES wishlists(id) ON DELETE CASCADE
 );
