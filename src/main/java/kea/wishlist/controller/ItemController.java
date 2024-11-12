@@ -27,18 +27,17 @@ public class ItemController {
                                HttpSession httpSession) {
         model.addAttribute("showItemForm", new Item());
         model.addAttribute("wishlistId", wishlistId);
-        model.addAttribute("userId", httpSession.getAttribute("userId"));
         return "item/addItem";
     }
 
     @PostMapping("/{wishlistId}/add")
-    public String addItem(HttpSession httpSession,
+    public String addItem(HttpSession session,
                           @ModelAttribute Item item,
-                          @PathVariable("wishlistId") int wishlistId) throws SQLException {
-        if(httpSession.getAttribute("userId")!=null) {
+                          @PathVariable int wishlistId) throws SQLException {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId != null) {
             itemService.addItem(item, wishlistId);
         }
-        Integer userId = (Integer) httpSession.getAttribute("userId");
         return "redirect:/" + userId + "/wishlist/" + wishlistId;
     }
 

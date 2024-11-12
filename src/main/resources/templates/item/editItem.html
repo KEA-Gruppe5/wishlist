@@ -8,6 +8,7 @@
     <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
+<div th:if="${session.userId != null}">
 <div class="container mt-5">
     <h2>Edit Item</h2>
 
@@ -44,6 +45,10 @@
         <button type="submit" class="btn btn-primary">Update Item</button>
         <a href="#" th:href="@{'/wishlist/' + ${item.wishlistId}}" class="btn btn-secondary">Cancel</a>
     </form>
+</div>
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

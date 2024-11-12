@@ -6,6 +6,7 @@
     <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
+<div th:if="${session.userId != null}">
 <h1>Create a Wishlist</h1>
 
 
@@ -14,7 +15,10 @@
     <input type="text" id="name" th:field="*{name}" required placeholder="Enter wishlist name"/>
     <button type="submit" class="btn btn-success">Create Wishlist</button>
 </form>
-
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
 </body>
 </html>
 
