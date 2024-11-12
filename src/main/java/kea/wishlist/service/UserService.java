@@ -4,8 +4,10 @@ import kea.wishlist.dto.UserDTO;
 import kea.wishlist.model.User;
 import kea.wishlist.model.VerificationToken;
 import kea.wishlist.repository.UserRepository;
-import kea.wishlist.util.EmailAlreadyExistsException;
+import kea.wishlist.exceptions.BadCredentialsException;
+import kea.wishlist.exceptions.EmailAlreadyExistsException;
 import kea.wishlist.util.PasswordEncoder;
+import kea.wishlist.exceptions.UserIsNotEnabledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,20 +63,26 @@ public class UserService {
     public User authenticate(UserDTO userDTO) throws SQLException {
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         if(user != null){
-            boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),
-                    user.getPassword());
-            if(isPasswordCorrect){  //in case password is encrypted
-                logger.info("User authenticated: " + user);
-                return user;
+            if(user.isEnabled()){
+                boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),
+                        user.getPassword());
+                if(isPasswordCorrect){  //in case password is encrypted
+                    logger.info("User authenticated: " + user);
+                    return user;
+                }
+                if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
+                    logger.info("User authenticated: " + user);
+                    return user;
+                }
+                logger.info("User is not authenticated.");
+                logger.info("Password:" + userDTO.getPassword());
+                logger.info("Password in db: " + user.getPassword());
+            }else{
+                logger.info("User is not activated yet.");
+                throw new UserIsNotEnabledException();
             }
-            if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
-                logger.info("User authenticated: " + user);
-                return user;
-            }
-            logger.info("User is not authenticated.");
-            logger.info("Password:" + userDTO.getPassword());
-            logger.info("Password in db: " + user.getPassword());
+
         }
-        return null;
+        throw new BadCredentialsException();
     }
 }

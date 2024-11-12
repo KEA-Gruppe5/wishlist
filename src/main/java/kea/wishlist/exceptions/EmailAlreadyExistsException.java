@@ -1,4 +1,4 @@
-package kea.wishlist.util;
+package kea.wishlist.exceptions;
 
 public class EmailAlreadyExistsException extends RuntimeException{
 

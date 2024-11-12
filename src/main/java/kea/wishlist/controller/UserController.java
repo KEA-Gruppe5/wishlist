@@ -6,7 +6,9 @@ import kea.wishlist.model.User;
 import kea.wishlist.service.PasswordValidator;
 import kea.wishlist.service.UserService;
 import kea.wishlist.service.VerificationService;
-import kea.wishlist.util.TokenIsAlreadyUsedException;
+import kea.wishlist.exceptions.BadCredentialsException;
+import kea.wishlist.exceptions.TokenIsAlreadyUsedException;
+import kea.wishlist.exceptions.UserIsNotEnabledException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,16 +62,18 @@ public class UserController {
     @PostMapping("/login")
     public String authenticate(@ModelAttribute("user") UserDTO userDTO, HttpSession httpSession,
                                Model model) throws SQLException {
-        User authenticatedUser = userService.authenticate(userDTO);
-        if (authenticatedUser != null) {
-            int userId = authenticatedUser.getId();
-            httpSession.setAttribute("userId", userId);
-            model.addAttribute("userId", userId);
-            return "redirect:/" + userId + "/wishlist";
-        } else {
-            model.addAttribute("error", "Invalid email or password");
-            return "user/login";
+        try {
+            User authenticatedUser = userService.authenticate(userDTO);
+            if (authenticatedUser != null) {
+                int userId = authenticatedUser.getId();
+                httpSession.setAttribute("userId", userId);
+                model.addAttribute("userId", userId);
+                return "redirect:/" + userId + "/wishlist";
+            }
+        }catch(UserIsNotEnabledException | BadCredentialsException e){
+            model.addAttribute("error", e.getMessage());
         }
+        return "user/login";
     }
 
 

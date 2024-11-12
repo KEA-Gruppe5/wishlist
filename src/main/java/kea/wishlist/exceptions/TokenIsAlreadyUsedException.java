@@ -1,4 +1,4 @@
-package kea.wishlist.util;
+package kea.wishlist.exceptions;
 
 public class TokenIsAlreadyUsedException extends RuntimeException{
 

@@ -3,7 +3,7 @@ package kea.wishlist.service;
 import kea.wishlist.model.VerificationToken;
 import kea.wishlist.repository.UserRepository;
 import kea.wishlist.repository.VerificationTokenRepository;
-import kea.wishlist.util.TokenIsAlreadyUsedException;
+import kea.wishlist.exceptions.TokenIsAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
