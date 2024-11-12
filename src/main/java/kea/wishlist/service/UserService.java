@@ -39,12 +39,16 @@ public class UserService {
         User savedUser = userRepository.addUser(user);
         logger.info("Password:" + savedUser.getPassword());
         if(savedUser.getId() != 0){
-            VerificationToken token = verificationService.createToken(savedUser.getId());
-            String verificationLink = verificationService.createLink(savedUser.getId(), token.getToken());
-            emailService.sendEmail(savedUser, verificationLink);
-            logger.info("Email is sent.");
+           verifyUser(savedUser);
         }
         return savedUser;
+    }
+
+    public void verifyUser(User user) throws SQLException {
+        VerificationToken token = verificationService.createToken(user.getId());
+        String verificationLink = verificationService.createLink(user.getId(), token.getToken());
+        emailService.sendEmail(user, verificationLink);
+        logger.info("Email is sent.");
     }
 
     public void checkIfUserAlreadyExists(String email) throws SQLException {
