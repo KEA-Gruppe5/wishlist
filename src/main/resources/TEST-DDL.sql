@@ -13,7 +13,7 @@ CREATE TABLE users
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE token
+CREATE TABLE tokens
 (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,

@@ -87,12 +87,6 @@ public class UserController {
     @GetMapping("/{userId}/verify")
     public String verifyUser(@RequestParam("token") String token, @PathVariable("userId") int userId,
                              Model model) throws SQLException {
-       //model.addAttribute("message", );
-//        if(verificationService.enableUser(userId, token)){
-//            model.addAttribute("isEnabled", true);
-//        }else{
-//            return "redirect:/error";
-//        }
         try{
             String message = verificationService.enableUser(userId, token);
             model.addAttribute("message", message);

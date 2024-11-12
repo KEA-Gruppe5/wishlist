@@ -87,6 +87,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 

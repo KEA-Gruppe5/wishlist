@@ -20,7 +20,7 @@ public class VerificationTokenRepository implements VerificationTokenRepositoryI
     @Override
     public VerificationToken addToken(VerificationToken token) throws SQLException {
         try(Connection connection = connectionManager.getConnection()){
-            String query = "INSERT INTO Wishlist.token (user_id, token, is_used) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Wishlist.tokens (user_id, token, is_used) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, token.getUserId());
             preparedStatement.setString(2,token.getToken());
@@ -41,7 +41,7 @@ public class VerificationTokenRepository implements VerificationTokenRepositoryI
     @Override
     public VerificationToken findVerificationTokenByToken(String token) throws SQLException {
         try (Connection connection = connectionManager.getConnection()) {
-            String query = "SELECT * FROM Wishlist.token WHERE token = ?";
+            String query = "SELECT * FROM Wishlist.tokens WHERE token = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, token);
 
@@ -60,7 +60,7 @@ public class VerificationTokenRepository implements VerificationTokenRepositoryI
 
     public boolean useToken(int id) throws SQLException {
         try (Connection connection = connectionManager.getConnection()){
-            String query = "UPDATE token SET is_used = ? WHERE id = ?";
+            String query = "UPDATE Wishlist.tokens SET is_used = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setBoolean(1,true);
             preparedStatement.setInt(2, id);

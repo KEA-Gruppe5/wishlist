@@ -74,9 +74,9 @@ public class UserService {
                     logger.info("User authenticated: " + user);
                     return user;
                 }
-                logger.info("User is not authenticated.");
-                logger.info("Password:" + userDTO.getPassword());
-                logger.info("Password in db: " + user.getPassword());
+                logger.info("User is not authenticated.\nPassword:"
+                        + userDTO.getPassword()+"\nPassword in db: " + user.getPassword());
+
             }else{
                 logger.info("User is not activated yet.");
                 throw new UserIsNotEnabledException();
