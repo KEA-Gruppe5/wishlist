@@ -18,14 +18,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final VerificationService verificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       EmailService emailService, VerificationService verificationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.verificationService = verificationService;
     }
 
     public User saveUser(User user) throws SQLException {
@@ -34,8 +37,9 @@ public class UserService {
         checkIfUserAlreadyExists(user.getEmail());
         User savedUser = userRepository.addUser(user);
         logger.info("Password:" + savedUser.getPassword());
-        if(savedUser!=null &&  savedUser.getId()!=0){
+        if(savedUser.getId() != 0){
             emailService.sendEmail(savedUser.getEmail());
+            verificationService.createToken(savedUser.getId());
             logger.info("Email is sent.");
         }
         return savedUser;

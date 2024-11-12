@@ -17,6 +17,7 @@ public class VerificationToken {
     public VerificationToken(int userId, String token) {
         this.userId = userId;
         this.token = token;
+        this.isUsed = false;
     }
 
     @Override

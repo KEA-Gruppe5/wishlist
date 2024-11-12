@@ -4,9 +4,10 @@ import kea.wishlist.model.VerificationToken;
 import kea.wishlist.util.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-
+@Repository
 public class VerificationTokenRepository implements VerificationTokenRepositoryInterface{
 
     private final ConnectionManager connectionManager;

@@ -30,6 +30,8 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private EmailService emailService;
+    @Mock
+    private VerificationService verificationService;
 
     @InjectMocks
     private UserService userService;
@@ -58,6 +60,7 @@ class UserServiceTest {
         assertEquals("encodedPassword", savedUser.getPassword(), "Password is not encoded.");
         verify(userRepository, times(1)).addUser(user);
         verify(emailService, times(1)).sendEmail(any(String.class));
+        verify(verificationService, times(1)).createToken(any(Integer.class));
         logger.info("testSaveUser - " + savedUser);
     }
 
