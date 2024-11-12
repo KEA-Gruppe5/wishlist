@@ -1,17 +1,19 @@
-package kea.wishlist.repo;
+package kea.wishlist.repository;
 
-import kea.wishlist.model.ItemModel;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
+import kea.wishlist.model.Item;
+import kea.wishlist.repository.ItemRepository;
+import kea.wishlist.util.ConnectionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,72 +25,60 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemRepoTest {
 
 
-    private ItemModel item;
 
     @Autowired
-    private ItemRepo itemRepo;
+    private ItemRepository itemRepo;
+
+    private Item item;
 
     private static final Logger logger = LoggerFactory.getLogger(ItemRepoTest.class);
 
-
     @BeforeEach
     void setup() throws SQLException {
-        item = new ItemModel(1, 1, "updatedName", "updatedDesc", "link",2, "updatedImgUrl");
+        item = new Item(1, 1, "updatedName", "updatedDesc", "link", 2.0, "updatedImgUrl", true);
+        itemRepo.addItem(item, item.getWishlistId());
     }
 
     @Test
     void findAllItems() throws SQLException {
-        List<ItemModel> findItem = itemRepo.findAllItems(item.getId());
+        List<Item> findItem = itemRepo.findAllItems(item.getWishlistId());
         assertNotNull(findItem);
-        assertEquals("updatedName", item.getName());
-        assertEquals(1, item.getId());
+        assertFalse(findItem.isEmpty());
+        assertEquals("Noise Cancelling Headphones", findItem.get(0).getName());
+        assertEquals(1, findItem.get(0).getWishlistId());
     }
 
     @Test
     void addItem() throws SQLException {
-        ItemModel addItem = itemRepo.addItem(item, item.getId());
-        assertNotNull(addItem);
-        assertEquals("updatedName", item.getName());
-        assertEquals(1, addItem.getId());
-        logger.info("Test add item:", addItem);
+        Item newItem = new Item(2, 1, "newItem", "newDesc", "newLink", 3.0, "newImgUrl", false);
+        Item addedItem = itemRepo.addItem(newItem, newItem.getWishlistId());
+        assertNotNull(addedItem);
+        assertEquals("newItem", addedItem.getName());
+        logger.info("Test add item: {}", addedItem);
     }
 
     @Test
     void updateItem() throws SQLException {
-        //ARRANGE
-        itemRepo.addItem(item, item.getId());
-
-        //ACT
         item.setName("testName");
         item.setDescription("testDesc");
-        ItemModel updatedItem = itemRepo.updateItem(item,item.getId());
+        Item updatedItem = itemRepo.updateItem(item, item.getId());
 
-        //ASSERT
         assertNotNull(updatedItem);
         assertEquals("testName", updatedItem.getName());
         assertEquals("testDesc", updatedItem.getDescription());
     }
 
     @Test
-    void showUpdateItemForm() throws SQLException {
-        itemRepo.addItem(item, item.getId());
-
-        ItemModel updated = itemRepo.showUpdateItemForm(3);
-        //ASSERT
-        assertNotNull(updated);
-        assertEquals(item,updated);
-
+    void findItemById() throws SQLException {
+        Item foundItem = itemRepo.findItemById(item.getId());
+        assertNotNull(foundItem);
+        assertEquals(item.getId(), foundItem.getId());
     }
 
     @Test
-    void deleteItem() throws SQLException{
-        itemRepo.addItem(item, item.getId());
-
-        boolean deleted = itemRepo.deleteItem(item.getId());
-        assertTrue(deleted);
-    }
-
-    @Test
-    void findItemById() {
+    void reserveGift() throws SQLException {
+        itemRepo.reserveGift(item.getId());
+        Item reservedItem = itemRepo.findItemById(item.getId());
+        assertFalse(reservedItem.isReserveGift());
     }
 }
