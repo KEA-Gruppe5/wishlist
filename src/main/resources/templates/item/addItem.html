@@ -17,11 +17,15 @@
         <input type="hidden" th:field="*{wishlistId}" />
 
         <div class="mb-3">
-            <label for="url" class="form-label">Product URL (to Fetch)</label>
-            <input type="text" id="url" th:field="*{url}" class="form-control" placeholder="Enter product URL" required/>
-            <small class="form-text text-muted">Enter a URL from a supported store.</small>
+            <label for="url" class="form-label">Auto fetch product</label>
+            <div class="input-group">
+                <input type="text" id="url" th:field="*{url}" class="form-control" placeholder="Enter product URL" required />
+                <button type="button" id="fetchProductBtn" class="btn btn-secondary">Fetch Product</button>
+            </div>
+            <small class="form-text text-muted">Enter a URL from Proshop.dk.</small>
         </div>
-        <button type="button" id="fetchProductBtn" class="btn btn-secondary">Fetch Product</button>
+
+        <hr class="my-4">
 
         <div class="mb-3">
             <label for="name" class="form-label">Product Name</label>
