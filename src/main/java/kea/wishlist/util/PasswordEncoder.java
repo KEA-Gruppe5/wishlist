@@ -17,7 +17,6 @@ public class PasswordEncoder {
         }catch(NoSuchAlgorithmException e){
             throw new RuntimeException("Error encoding password", e);
         }
-
     }
 
     public boolean matches(String rawPassword, String encodedPassword){

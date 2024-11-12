@@ -1,8 +1,7 @@
 package kea.wishlist.service;
 
-import kea.wishlist.model.ItemModel;
-import kea.wishlist.model.User;
-import kea.wishlist.repo.ItemRepo;
+import kea.wishlist.model.Item;
+import kea.wishlist.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -11,34 +10,38 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    private final ItemRepo itemRepo;
+    private final ItemRepository itemRepository;
 
-    public ItemService(ItemRepo itemRepo) {
-        this.itemRepo = itemRepo;
+    public ItemService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
     }
 
-    public List<ItemModel> getAllItems(int wishlistId) throws SQLException {
-        return itemRepo.findAllItems(wishlistId);
+    public List<Item> getAllItems(int wishlistId) throws SQLException {
+        return itemRepository.findAllItems(wishlistId);
     }
 
     public String deleteItem(int id) {
-        if (itemRepo.deleteItem(id))
+        if (itemRepository.deleteItem(id))
             return id + " was successfully deleted!";
         else {
             return "Could not find " + id;
         }
     }
 
-    public ItemModel updateItem(ItemModel itemModel,int id){
-        return itemRepo.updateItem(itemModel,id);
+    public Item updateItem(Item item, int id){
+        return itemRepository.updateItem(item, id);
     }
 
-    public ItemModel showUpdateItemForm(int wishlistId){
-        return itemRepo.showUpdateItemForm(wishlistId);
+    public Item findItemById(int id) throws SQLException {
+        return itemRepository.findItemById(id);
     }
 
-    public ItemModel addItem(ItemModel item, int wishlistId) throws SQLException {
-        itemRepo.addItem(item, wishlistId);
+    public Item addItem(Item item, int wishlistId) throws SQLException {
+        itemRepository.addItem(item, wishlistId);
         return item;
+    }
+
+    public void reserveGift(int id) throws SQLException {
+        itemRepository.reserveGift(id);
     }
 }

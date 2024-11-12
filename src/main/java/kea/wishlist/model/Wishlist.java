@@ -1,17 +1,17 @@
 package kea.wishlist.model;
 
 
-public class WishlistModel {
+public class Wishlist {
     private int id;
     private int userId;
     private String name;
 
 
     //no arg constructor for spring to create an instance with requestBody
-    public WishlistModel() {
+    public Wishlist() {
     }
 
-    public WishlistModel(int userId, String name) {
+    public Wishlist(int userId, String name) {
         this.userId = userId;
         this.name = name;
     }

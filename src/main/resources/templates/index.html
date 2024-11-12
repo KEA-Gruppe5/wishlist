@@ -5,22 +5,42 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/images/gold-star.jpg" type="image/jpg">
     <title>Wish list</title>
-    <link rel="stylesheet" href="/style/main_style.css">
+    <div th:replace="~{fragments/nav :: nav}"></div>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css"> <!-- Link to the new external CSS file -->
 </head>
+
 <body>
-<header>
-    <div th:replace="fragments/nav :: nav"></div>
-</header>
 
 <div id="myText">
     <h1>Wishlist project homepage</h1>
-    <p>WIP</p>
+    <p>Currently it is possible:</p>
+    <ul>
+        <li>to register a user and receive an email upon registration;</li>
+        <li>to log in;</li>
+        <li>to create, update, delete wishlist;</li>
+        <li>to see, update, delete, reserve items in a wishlist.</li>
+    </ul>
 </div>
+<div class="nav-item">
+    <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit()">Debug Login</button>
+</div>
+<form id="loginForm" action="/login" method="post" style="display: none;">
+    <input type="email" id="email" name="email" />
+    <input type="password" id="password" name="password" />
+</form>
+
+<script>
+    function autoFillAndSubmit() {
+        document.getElementById('email').value = 'alice.smith@example.com';
+        document.getElementById('password').value = 'password123';
+        document.getElementById('loginForm').submit();
+    }
+</script>
 
 <footer>
-    <p><a href="">Contract us at fakeEmail@gmail.com</a></p>
+    <p><a href="">Contact us at fakeEmail@gmail.com</a></p>
     <p><a href="">VisitDenmark © 2024</a></p>
-
 </footer>
 
 </body>

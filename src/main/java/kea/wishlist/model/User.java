@@ -8,6 +8,7 @@ public class User {
     private String email;
     private int age;
     private String password;
+    private boolean enabled;
 
     public User(String firstName, String lastName, String email, int age, String password) {
         this.firstName = firstName;
@@ -87,5 +88,13 @@ public class User {
                 ", age=" + age +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
