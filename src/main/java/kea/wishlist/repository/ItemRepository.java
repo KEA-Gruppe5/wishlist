@@ -1,7 +1,6 @@
 package kea.wishlist.repository;
 
 import kea.wishlist.model.Item;
-import kea.wishlist.model.User;
 import kea.wishlist.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,14 +24,15 @@ public class ItemRepository implements ItemRepositoryInterface {
         itemList.clear();
         try (Connection connection = connectionManager.getConnection()) {
 
-            String query = "SELECT wishlists.id AS wishlist_Id, " + // Explicitly selecting as 'wishlistId'
+            String query = "SELECT wishlists.id AS wishlist_Id, " +  
                     "wishlists.user_Id, " +
                     "items.id, " +
                     "items.name, " +
                     "items.description, " +
                     "items.price, " +
                     "items.link, " +
-                    "items.img_Url " +
+                    "items.img_url, " +  
+                    "items.reserve_gift " +  
                     "FROM wishlists " +
                     "JOIN items ON wishlists.id = items.wishlist_Id " +
                     "WHERE wishlists.id = ?";
@@ -43,9 +43,7 @@ public class ItemRepository implements ItemRepositoryInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Item item = new Item();
-                // Set wishlist-related details if needed (e.g., wishlistName)
-
-                // Populate the item model with data from the result set
+                
                 item.setId(resultSet.getInt("id"));
                 item.setWishlistId(resultSet.getInt("wishlist_id"));
                 item.setName(resultSet.getString("name"));
@@ -53,6 +51,7 @@ public class ItemRepository implements ItemRepositoryInterface {
                 item.setPrice(resultSet.getDouble("price"));
                 item.setUrl(resultSet.getString("link"));
                 item.setImgUrl(resultSet.getString("img_url"));
+                item.setReserveGift(resultSet.getBoolean("reserve_gift"));
 
                 itemList.add(item);
             }
@@ -134,6 +133,16 @@ public class ItemRepository implements ItemRepositoryInterface {
             } else {
                 throw new NoSuchElementException("No item found with id " + id);
             }
+        }
+    }
+
+    public void reserveGift(int id) throws SQLException {
+        try (Connection connection = connectionManager.getConnection()){
+            String query = "UPDATE items SET reserve_gift = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1,true);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
         }
     }
 }

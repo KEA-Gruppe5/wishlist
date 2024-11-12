@@ -36,7 +36,7 @@ public class UserController {
     public String register(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "registerForm";
+        return "user/registerForm";
     }
 
     @PostMapping("/register")
@@ -51,7 +51,7 @@ public class UserController {
     public String loginPage(Model model) {
         UserDTO userDTO = new UserDTO();
         model.addAttribute("user", userDTO);
-        return "login";
+        return "user/login";
     }
 
     @PostMapping("/login")
@@ -65,7 +65,7 @@ public class UserController {
             return "redirect:/" + userId + "/wishlist";
         } else {
             model.addAttribute("error", "Invalid email or password");
-            return "login";
+            return "user/login";
         }
     }
 

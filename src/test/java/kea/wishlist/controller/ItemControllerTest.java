@@ -41,7 +41,7 @@ class ItemControllerTest {
 
     @BeforeEach
     void setUp() {
-        item = new Item(1,2,"testName","testDesc","testUrl",23,"testImg");
+        item = new Item(1,2,"testName","testDesc","testUrl",23,"testImg", true);
 
         userId = 3;
         wishlistId = item.getWishlistId();
