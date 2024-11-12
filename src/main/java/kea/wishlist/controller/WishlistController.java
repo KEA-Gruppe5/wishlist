@@ -70,7 +70,7 @@ public class WishlistController {
         return "wishlist/editWishlist";
     }
 
-    @PutMapping("/{wishlistId}/update")
+    @PostMapping("/{wishlistId}/update")
     public String update(@PathVariable int wishlistId, @ModelAttribute Wishlist updatedWishlist) throws SQLException {
         int userId;
         try {

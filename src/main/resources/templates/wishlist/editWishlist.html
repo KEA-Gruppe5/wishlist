@@ -10,7 +10,7 @@
 
 <!-- Form to edit the wishlist -->
 <form th:action="@{/{userId}/wishlist/{wishlistId}/update(userId=${wishlist.getUserId()}, wishlistId=${wishlist.id})}" method="post">
-    <input type="hidden" name="_method" value="put" />
+    <input type="hidden" name="_method" value="post" />
     <label for="name">Wishlist Name:</label>
     <input type="text" id="name" name="name" th:value="${wishlist.name}" required />
 
