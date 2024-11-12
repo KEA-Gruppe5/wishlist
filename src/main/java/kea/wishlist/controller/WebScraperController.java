@@ -4,28 +4,23 @@ import kea.wishlist.model.Item;
 import kea.wishlist.service.WebScraperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class WebScraperController {
-    //TODO add JS instead of controller, do re
-    @Autowired
-    WebScraperService webScraperService;
 
-    @PostMapping("/scrape/item")
-    public String scrape(@RequestParam String url, Model model) {
+    @Autowired
+    private WebScraperService webScraperService;
+
+    @PostMapping("/scrape")
+    @ResponseBody
+    public Item scrapeItem(@RequestParam("url") String url) {
         try {
-            Item item = webScraperService.scrapeitemData(url);
-            model.addAttribute("showItemForm", item);
+            return webScraperService.scrapeitemData(url);
         } catch (Exception e) {
-            Item errorItem = new Item();
-            errorItem.setDescription("Error occurred: " + e.getMessage());
-            model.addAttribute("showItemForm", errorItem);
+            return new Item();
         }
-        return "item/addItem";
     }
 }
-

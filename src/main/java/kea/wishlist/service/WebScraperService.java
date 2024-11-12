@@ -14,10 +14,6 @@ public class WebScraperService {
     public Item scrapeitemData(String url)  {
         Item item = new Item();
 
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "https://" + url;
-        }
-
         try {
             Document document = Jsoup.connect(url).get();
 
@@ -25,29 +21,19 @@ public class WebScraperService {
             item.setName(title);
 
             String description = document.select("span.pb-2").text();
+            description = description.substring(0, 255);
             item.setDescription(description);
 
             String imgUrl = document.select("img.h-auto").attr("src");
-            item.setImgUrl(imgUrl);
+            item.setImgUrl("https://www.proshop.dk" + imgUrl);
 
             String priceText = document.select("span.site-currency-attention").text();
-
-            if (priceText.isEmpty()) {
-                item.setPrice(0.0);
-            } else {
-                priceText = priceText.replaceAll("[^\\d,]", "").split(",")[0];
-
-                try {
-                    item.setPrice(Double.parseDouble(priceText));
-                } catch (NumberFormatException e) {
-                    item.setPrice(0.0);
-                }
-            }
+            priceText = priceText.replaceAll("[^\\d,]", "").split(",")[0];
+            item.setPrice(Double.parseDouble(priceText));
 
         } catch (IOException e) {
             item.setDescription("Error: " + e.getMessage());
         }
-
         return item;
     }
 }
