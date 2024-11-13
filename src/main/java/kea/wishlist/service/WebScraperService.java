@@ -15,12 +15,7 @@ public class WebScraperService {
         Item item = new Item();
 
         try {
-            Document document = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36")
-                    .referrer("https://www.google.com")
-                    .header("Accept-Language", "en-US,en;q=0.9")
-                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                    .header("Connection", "keep-alive")
-                    .timeout(10000)
+            Document document = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
                     .get();
 
             String title = document.select("h1").text();
