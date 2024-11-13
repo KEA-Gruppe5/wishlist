@@ -8,9 +8,9 @@ public class Item {
     private String url;
     private double price;
     private String imgUrl;
-    private boolean reserveGift;
+    private boolean isReserved;
 
-    public Item(int id, int wishlistId, String name, String description, String url, double price, String imgUrl, boolean reserveGift) {
+    public Item(int id, int wishlistId, String name, String description, String url, double price, String imgUrl, boolean isReserved) {
         this.id = id;
         this.wishlistId = wishlistId;
         this.name = name;
@@ -18,15 +18,15 @@ public class Item {
         this.url = url;
         this.price = price;
         this.imgUrl = imgUrl;
-        this.reserveGift = reserveGift;
+        this.isReserved = isReserved;
     }
 
-    public boolean isReserveGift() {
-        return reserveGift;
+    public boolean isReserved() {
+        return isReserved;
     }
 
-    public void setReserveGift(boolean reserveGift) {
-        this.reserveGift = reserveGift;
+    public void setReserved(boolean reserved) {
+        this.isReserved = reserved;
     }
 
     public int getWishlistId() {

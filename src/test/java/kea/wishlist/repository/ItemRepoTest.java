@@ -1,19 +1,13 @@
 package kea.wishlist.repository;
 
 import kea.wishlist.model.Item;
-import kea.wishlist.repository.ItemRepository;
-import kea.wishlist.util.ConnectionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -79,6 +73,6 @@ class ItemRepoTest {
     void reserveGift() throws SQLException {
         itemRepo.reserveGift(item.getId());
         Item reservedItem = itemRepo.findItemById(item.getId());
-        assertFalse(reservedItem.isReserveGift());
+        assertFalse(reservedItem.isReserved());
     }
 }

@@ -32,7 +32,7 @@ public class ItemRepository implements ItemRepositoryInterface {
                     "items.price, " +
                     "items.link, " +
                     "items.img_url, " +  
-                    "items.reserve_gift " +  
+                    "items.is_reserved " +
                     "FROM wishlists " +
                     "JOIN items ON wishlists.id = items.wishlist_Id " +
                     "WHERE wishlists.id = ?";
@@ -51,7 +51,7 @@ public class ItemRepository implements ItemRepositoryInterface {
                 item.setPrice(resultSet.getDouble("price"));
                 item.setUrl(resultSet.getString("link"));
                 item.setImgUrl(resultSet.getString("img_url"));
-                item.setReserveGift(resultSet.getBoolean("reserve_gift"));
+                item.setReserved(resultSet.getBoolean("is_reserved"));
 
                 itemList.add(item);
             }
@@ -138,7 +138,7 @@ public class ItemRepository implements ItemRepositoryInterface {
 
     public void reserveGift(int id) throws SQLException {
         try (Connection connection = connectionManager.getConnection()){
-            String query = "UPDATE items SET reserve_gift = ? WHERE id = ?";
+            String query = "UPDATE items SET is_reserved = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setBoolean(1,true);
             preparedStatement.setInt(2, id);

@@ -3,14 +3,12 @@
 <head>
     <title>User Wishlists</title>
     <link href="/allWishList_style.css" rel="stylesheet">
-
+    <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
 <div th:if="${session.userId != null}">
-<h1>Your Wishlists</h1>
 
 
-<div th:replace="~{fragments/nav :: nav}"></div>
 <div th:if="${userId}">
 
     <h1>My Wishlists</h1>

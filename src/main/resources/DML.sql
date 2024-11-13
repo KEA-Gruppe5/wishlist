@@ -10,7 +10,7 @@ INSERT INTO wishlists (user_id, name) VALUES
                                          (4, 'Davids Wishlist'),
                                          (4, 'David''s 2nd wishlist');
 
-INSERT INTO items (wishlist_id,name, description, price, link, img_url, reserve_item) VALUES
+INSERT INTO items (wishlist_id,name, description, price, link, img_url, is_reserved) VALUES
                                                                           (1,'Noise Cancelling Headphones', 'High-quality wireless headphones with noise cancellation', 299.99, 'http://example.com/headphones', 'http://example.com/image/headphones.jpg', false),
                                                                           (1,'Smartwatch', 'Latest smartwatch with fitness tracking and notifications', 199.99, 'http://example.com/smartwatch', 'http://example.com/image/smartwatch.jpg', true),
                                                                           (2,'Something', 'Latest smartwatch with fitness tracking and notifications', 199.99, 'http://example.com/smartwatch', 'http://example.com/image/smartwatch.jpg', false);
