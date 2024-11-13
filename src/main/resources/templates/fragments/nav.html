@@ -14,7 +14,7 @@
 
             <!-- Display when user is logged in -->
             <li th:if="${session.userId != null}" class="nav-item">
-                <a th:href="@{/{userId}/wishlist(userId=${userId})}" class="nav-link">Your Wishlists</a>
+                <a th:href="@{/{userId}/wishlist(userId=${session.userId})}" class="nav-link">Your Wishlists</a>
             </li>
             <li th:if="${session.userId != null}" class="nav-item">
                 <a href="/logout" class="nav-link">Logout</a>
