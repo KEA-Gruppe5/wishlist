@@ -48,6 +48,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="url" class="form-label">Product URL</label>
+            <input type="text" id="url" th:field="*{url}" class="form-control" placeholder="Product URL" />
+        </div>
+
+        <div class="mb-3">
             <label for="price" class="form-label">Price (DKK)</label>
             <input type="text" id="price" th:field="*{price}" class="form-control" placeholder="Price in DKK" />
         </div>
