@@ -10,12 +10,21 @@ import java.io.IOException;
 @Service
 public class WebScraperService {
 
+
     // fix
     public Item scrapeitemData(String url)  {
+        String apiKey = "0XE64RG6REXQBIO9AQX15FVCOY3PVMYL973CTJYQJPD5TNESAAYOQVP3J4WX7JR34OCA3KO3R4SIRPST";
+        String scrapingBeeUrl = "https://app.scrapingbee.com/api/v1/?api_key=" + apiKey + "&url=" + url + "&render_js=true&json=true";;
+
         Item item = new Item();
 
         try {
-            Document document = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
+            Document document = Jsoup.connect(url)
+                    .header("Accept-Language", "en-US,en;q=0.9")
+                    .header("Referer", "https://www.proshop.dk/")
+                    .userAgent("Mozilla/5.0 ...")
+                    .timeout(10000)
+                    .ignoreContentType(true)
                     .get();
 
             String title = document.select("h1").text();
