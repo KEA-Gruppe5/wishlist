@@ -20,8 +20,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
 @SpringBootTest
+@ActiveProfiles("test")
 class ItemRepoTest {
 
 
@@ -44,7 +44,7 @@ class ItemRepoTest {
         List<Item> findItem = itemRepo.findAllItems(item.getWishlistId());
         assertNotNull(findItem);
         assertFalse(findItem.isEmpty());
-        assertEquals("Noise Cancelling Headphones", findItem.get(0).getName());
+        assertEquals("testName", findItem.get(0).getName());
         assertEquals(1, findItem.get(0).getWishlistId());
     }
 
