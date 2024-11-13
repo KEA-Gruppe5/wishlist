@@ -27,6 +27,7 @@ public class WebScraperService {
                     .ignoreContentType(true)
                     .get();
 
+            //
             String title = document.select("h1").text();
             item.setName(title);
 
