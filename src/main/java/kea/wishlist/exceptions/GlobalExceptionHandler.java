@@ -1,4 +1,4 @@
-package kea.wishlist.util;
+package kea.wishlist.exceptions;
 
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;

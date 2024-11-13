@@ -33,11 +33,6 @@ public class WishlistController {
                                HttpSession httpSession) throws SQLException {
         if(httpSession.getAttribute("userId")!=null) {
             List<Item> list = itemService.getAllItems(wishlistid);
-//        if (list.isEmpty()){
-//            model.addAttribute("error", "No wishlist found for the provided ID.");
-//            return "error";
-//        }
-            model.addAttribute("userId", httpSession.getAttribute("userId"));
             model.addAttribute("findAllItems", list);
         }
         return "wishlist/wishlist";
@@ -63,7 +58,6 @@ public class WishlistController {
     @PostMapping("/{wishlistId}/delete")
     public String deleteWishlist(@PathVariable int wishlistId, @PathVariable int userId) throws SQLException {
         wishlistService.deleteWishlist(wishlistId);
-
         return "redirect:/" + userId + "/wishlist";
     }
     @GetMapping("/{wishlistId}/update")

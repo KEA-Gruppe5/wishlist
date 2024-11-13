@@ -6,6 +6,8 @@
 
 </head>
 <body>
+<div th:if="${session.userId != null}">
+<h1>Your Wishlists</h1>
 
 
 <div th:replace="~{fragments/nav :: nav}"></div>
@@ -33,8 +35,8 @@
     </div>
 </div>
 
-
-<div th:if="${userId == null}">
+</div>
+<div th:if="${session.userId == null}">
     <h1>You are not authenticated</h1>
 </div>
 </body>

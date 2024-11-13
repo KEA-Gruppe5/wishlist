@@ -9,7 +9,17 @@ CREATE TABLE users
     age        INT,
     email      VARCHAR(255) UNIQUE,
     password   VARCHAR(255),
+    is_enabled BOOLEAN,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tokens
+(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        token VARCHAR(255) UNIQUE,
+        is_used BOOLEAN,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE wishlists

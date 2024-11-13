@@ -5,6 +5,7 @@
     <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
+<div th:if="${session.userId != null}">
 <h1>Edit Wishlist</h1>
 
 <!-- Form to edit the wishlist -->
@@ -19,7 +20,10 @@
 
 <a th:href="@{/{userId}/wishlist(userId=${wishlist.getUserId()})}">Cancel</a>
 
-
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
 
 </body>
 </html>

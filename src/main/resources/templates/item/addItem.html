@@ -9,8 +9,14 @@
 <div th:replace="~{fragments/nav :: nav}"></div>
 
 <body>
+
+<div th:if="${session.userId != null}">
+<div class="form-container">
+    <h1>Add New Item to Your Wishlist</h1>
+
 <div class="container">
     <h1>Add a Product to Your Wishlist</h1>
+
 
     <form th:object="${showItemForm}" th:action="@{/item/{wishlistId}/add(wishlistId=${wishlistId})}" method="post">
 
@@ -51,7 +57,15 @@
     </form>
 </div>
 
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
+</body>
+
+
 <script src="/script.js"></script>
+
 
 
 </body>

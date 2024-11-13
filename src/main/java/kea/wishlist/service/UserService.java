@@ -2,9 +2,12 @@ package kea.wishlist.service;
 
 import kea.wishlist.dto.UserDTO;
 import kea.wishlist.model.User;
+import kea.wishlist.model.VerificationToken;
 import kea.wishlist.repository.UserRepository;
-import kea.wishlist.util.EmailAlreadyExistsException;
+import kea.wishlist.exceptions.BadCredentialsException;
+import kea.wishlist.exceptions.EmailAlreadyExistsException;
 import kea.wishlist.util.PasswordEncoder;
+import kea.wishlist.exceptions.UserIsNotEnabledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final VerificationService verificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       EmailService emailService, VerificationService verificationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.verificationService = verificationService;
     }
 
     public User saveUser(User user) throws SQLException {
@@ -34,11 +40,17 @@ public class UserService {
         checkIfUserAlreadyExists(user.getEmail());
         User savedUser = userRepository.addUser(user);
         logger.info("Password:" + savedUser.getPassword());
-        if(savedUser!=null &&  savedUser.getId()!=0){
-            emailService.sendEmail(savedUser.getEmail());
-            logger.info("Email is sent.");
+        if(savedUser.getId() != 0){
+           verifyUser(savedUser);
         }
         return savedUser;
+    }
+
+    public void verifyUser(User user) throws SQLException {
+        VerificationToken token = verificationService.createToken(user.getId());
+        String verificationLink = verificationService.createLink(user.getId(), token.getToken());
+        emailService.sendEmail(user, verificationLink);
+        logger.info("Email is sent.");
     }
 
     public void checkIfUserAlreadyExists(String email) throws SQLException {
@@ -51,20 +63,26 @@ public class UserService {
     public User authenticate(UserDTO userDTO) throws SQLException {
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         if(user != null){
-            boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),
-                    user.getPassword());
-            if(isPasswordCorrect){  //in case password is encrypted
-                logger.info("User authenticated: " + user);
-                return user;
+            if(user.isEnabled()){
+                boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),
+                        user.getPassword());
+                if(isPasswordCorrect){  //in case password is encrypted
+                    logger.info("User authenticated: " + user);
+                    return user;
+                }
+                if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
+                    logger.info("User authenticated: " + user);
+                    return user;
+                }
+                logger.info("User is not authenticated.\nPassword:"
+                        + userDTO.getPassword()+"\nPassword in db: " + user.getPassword());
+
+            }else{
+                logger.info("User is not activated yet.");
+                throw new UserIsNotEnabledException();
             }
-            if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
-                logger.info("User authenticated: " + user);
-                return user;
-            }
-            logger.info("User is not authenticated.");
-            logger.info("Password:" + userDTO.getPassword());
-            logger.info("Password in db: " + user.getPassword());
+
         }
-        return null;
+        throw new BadCredentialsException();
     }
 }
