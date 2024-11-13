@@ -3,6 +3,7 @@ package kea.wishlist.service;
 import kea.wishlist.model.User;
 import kea.wishlist.model.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,10 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final VerificationService verificationService;
+    @Value("${SMTP_USERNAME}")
+    private String fromEmail;
+
+
 
     @Autowired
     public EmailService(JavaMailSender javaMailSender, VerificationService verificationService) {
@@ -28,6 +33,7 @@ public class EmailService {
                 .append("\nThank you for your registration on ").append(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString())
                 .append("\nPlease click the link below in order to activate your account ").append(user.getEmail()).append(":\n")
                 .append(link).append("\n").append("\nCheers,\n").append("Wishlist.kea team");
+        email.setFrom(fromEmail);
         email.setTo(user.getEmail());
         email.setSubject("Wishlist.kea: confirm your email address");
         email.setText(message.toString());
