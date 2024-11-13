@@ -31,7 +31,7 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           PROD_URL:  ${{ secrets.PROD_URL }}
           PROD_USER: ${{ secrets.PROD_USER }}
-          PROD_PASSWORD: ${{ secrets.PROD_PASS }}
+          PROD_PASS: ${{ secrets.PROD_PASS }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
