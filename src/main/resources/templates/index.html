@@ -16,14 +16,15 @@
     <h1>Wishlist project homepage</h1>
     <p>Currently it is possible:</p>
     <ul>
-        <li>to register a user and receive an email upon registration;</li>
-        <li>to log in;</li>
-        <li>to create, update, delete wishlist;</li>
-        <li>to see, update, delete, reserve items in a wishlist.</li>
+        <li>to register a user and receive an activation link on your email upon registration (please use real email);</li>
+        <li>to log in/log out;</li>
+        <li>to create, update, delete wishlists;</li>
+        <li>to see, update, delete, reserve items in a wishlist;</li>
+        <li>to fetch items via link from <a href="https://www.proshop.dk/">Proshop.dk</a></li>
     </ul>
 </div>
 <div class="nav-item">
-    <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit()">Debug Login</button>
+    <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit()">Login for debug</button>
 </div>
 <form id="loginForm" action="/login" method="post" style="display: none;">
     <input type="email" id="email" name="email" />
