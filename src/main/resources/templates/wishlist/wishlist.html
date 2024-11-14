@@ -10,15 +10,14 @@
 <body>
 <div th:if="${session.userId != null}">
     <div class="container mt-5">
-        <h1>Your Wishlist</h1>
+         <h1 th:text="${wishlistName}"></h1>
 
-        <!-- New Item Button -->
+
         <div class="mb-4">
             <a th:href="@{'/item/' + ${wishlistId} + '/add'}" class="btn btn-success">New Item</a>
         </div>
 
         <div class="row">
-            <!-- Iterating over items in wishlist -->
             <div class="col-md-4" th:each="item : ${findAllItems}">
                 <div class="card mb-4">
                     <img th:src="${item.imgUrl}" class="card-img-top">
@@ -26,20 +25,22 @@
                         <h5 class="card-title" th:text="${item.name}">Item Name</h5>
                         <p class="card-text" th:text="${item.description}">Item Description</p>
                         <p class="card-text"><strong>Price:</strong> DKK <span th:text="${item.price}">0.00</span></p>
-                        <a th:href="${item.url}" class="btn btn-primary">View Item</a>
-                        <div class="mt-3">
-                            <form th:action="@{'/item/' + ${item.id} + '/reserve'}" method="post" style="display:inline;">
-                                <button type="submit" class="btn"
+                        <div class="d-flex align-items-center">
+                            <a th:href="${item.url}" class="btn btn-primary mr-2" target="_blank">View Item</a>
+
+                            <form th:action="@{'/item/' + ${item.id} + '/reserve'}" method="post" class="mr-2">
+                                <button type="submit" class="btn btn-secondary"
                                         th:if="${item.reserved}"
-                                        th:text="'Item is Reserved'"
+                                        th:text="'Reserved'"
                                         th:disabled="true"></button>
-                                <button type="submit" class="btn"
+                                <button type="submit" class="btn btn-success"
                                         th:unless="${item.reserved}"
                                         th:text="'Reserve Item'"></button>
                             </form>
-                            <a th:href="@{'/item/'  +  ${item.id} + '/update'}" class="btn btn-warning">Edit</a>
-                            <form th:action="@{'/item/' + ${item.id} + '/delete'}" method="post"
-                                  style="display:inline;">
+
+                            <a th:href="@{'/item/' + ${item.id} + '/update'}" class="btn btn-warning mr-2">Edit</a>
+
+                            <form th:action="@{'/item/' + ${item.id} + '/delete'}" method="post" class="mr-2">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </div>

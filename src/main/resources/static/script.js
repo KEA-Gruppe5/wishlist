@@ -1,5 +1,5 @@
 document.getElementById("fetchProductBtn").addEventListener("click", function() {
-    var url = document.getElementById("url").value;
+    const url = document.getElementById("sUrl").value.trim();
 
     if (url) {
         $.ajax({
@@ -11,6 +11,7 @@ document.getElementById("fetchProductBtn").addEventListener("click", function() 
                 document.getElementById("description").value = response.description || "";
                 document.getElementById("imgUrl").value = response.imgUrl || "";
                 document.getElementById("price").value = response.price || "";
+                document.getElementById("url").value = url || "";
             },
             error: function() {
                 alert("Error fetching product data.");
