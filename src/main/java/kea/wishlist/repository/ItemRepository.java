@@ -63,6 +63,7 @@ public class ItemRepository implements ItemRepositoryInterface {
     @Override
     public Item addItem(Item item, int wishlistId) throws SQLException {
         String query = "INSERT INTO items (wishlist_id, name, description, price, link, img_url) VALUES (?, ?, ?, ?, ?, ?)";
+        System.out.println("URL being saved to database: " + item.getUrl());
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -73,6 +74,7 @@ public class ItemRepository implements ItemRepositoryInterface {
             preparedStatement.setString(5, item.getUrl());
             preparedStatement.setString(6, item.getImgUrl());
             preparedStatement.executeUpdate();
+
         }
 
         return item;
@@ -128,7 +130,7 @@ public class ItemRepository implements ItemRepositoryInterface {
                         item.setDescription(resultSet.getString("description"));
                         item.setPrice(resultSet.getInt("price"));
                         item.setUrl(resultSet.getString("link"));
-                        item.setUrl(resultSet.getString("img_url"));
+                        item.setImgUrl(resultSet.getString("img_url"));
                 return item;
             } else {
                 throw new NoSuchElementException("No item found with id " + id);

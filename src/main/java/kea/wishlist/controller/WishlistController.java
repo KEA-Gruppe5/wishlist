@@ -33,6 +33,7 @@ public class WishlistController {
                                HttpSession httpSession) throws SQLException {
         if(httpSession.getAttribute("userId")!=null) {
             List<Item> list = itemService.getAllItems(wishlistid);
+            model.addAttribute("wishlistName", wishlistService.findWishlistById(wishlistid).getName());
             model.addAttribute("findAllItems", list);
         }
         return "wishlist/wishlist";
