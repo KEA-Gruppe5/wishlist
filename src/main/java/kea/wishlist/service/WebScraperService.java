@@ -13,8 +13,7 @@ public class WebScraperService {
 
     // fix
     public Item scrapeitemData(String url)  {
-        String apiKey = "0XE64RG6REXQBIO9AQX15FVCOY3PVMYL973CTJYQJPD5TNESAAYOQVP3J4WX7JR34OCA3KO3R4SIRPST";
-        String scrapingBeeUrl = "https://app.scrapingbee.com/api/v1/?api_key=" + apiKey + "&url=" + url + "&render_js=true&json=true";;
+
 
         Item item = new Item();
 
