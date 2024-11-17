@@ -41,16 +41,30 @@ class UserControllerTest {
                 .andExpect(view().name("user/registerForm"));
     }
 
-    @Test
-    void testUserRegistration() throws Exception {
-        User user = new User("FirstName", "LastName", "email@test", 22, "kea123");
-        when(passwordValidator.isValid(user.getPassword())).thenReturn(true);
-        mockMvc.perform(post("/register")
-                .sessionAttr("user", user))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/login"));
 
-        //checks that the service was called
+
+    @Test
+    void testUserRegistration_RedirectsToLogin() throws Exception {
+        // Arrange
+        User user = new User("FirstName", "LastName", "email@test", 22, "kea123");
+
+        // Mock password validation
+        when(passwordValidator.isValid(user.getPassword())).thenReturn(true);
+
+        // Mock saveUser to return the user
+        when(userService.saveUser(any(User.class))).thenReturn(user);
+
+        // Act & Assert
+        mockMvc.perform(post("/register")
+                        .param("firstName", "FirstName") // Simulate form field
+                        .param("lastName", "LastName")
+                        .param("email", "email@test")
+                        .param("age", "22")
+                        .param("password", "kea123"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/login")); // Assert redirection to /login
+
+        // Verify that saveUser was called
         verify(userService, times(1)).saveUser(any(User.class));
     }
 
