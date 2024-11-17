@@ -28,15 +28,14 @@ public class EmailService {
 
     public void sendEmail(User user, String link) {
         SimpleMailMessage email = new SimpleMailMessage();
-        StringBuilder message = new StringBuilder();
-        message.append("Hi ").append(user.getFirstName()).append("!")
-                .append("\nThank you for your registration on ").append(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString())
-                .append("\nPlease click the link below in order to activate your account ").append(user.getEmail()).append(":\n")
-                .append(link).append("\n").append("\nCheers,\n").append("Wishlist.kea team");
+        String message = "Hi " + user.getFirstName() + "!" +
+                "\nThank you for your registration on " + ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() +
+                "\nPlease click the link below in order to activate your account " + user.getEmail() + ":\n" +
+                link + "\n" + "\nCheers,\n" + "Wishlist.kea team";
         email.setFrom(fromEmail);
         email.setTo(user.getEmail());
         email.setSubject("Wishlist.kea: confirm your email address");
-        email.setText(message.toString());
+        email.setText(message);
         javaMailSender.send(email);
     }
 
