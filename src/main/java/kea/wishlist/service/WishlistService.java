@@ -12,7 +12,6 @@ import java.util.List;
 public class WishlistService {
     private final WishlistRepository wishlistRepository;
 
-
     @Autowired
     public WishlistService(WishlistRepository wishlistRepository) {
         this.wishlistRepository = wishlistRepository;

@@ -12,7 +12,6 @@ import java.sql.SQLException;
 public class ConnectionManager {
 
     private final DataSource dataSource;
-
     @Autowired
     public ConnectionManager(DataSource dataSource) {
         this.dataSource = dataSource;

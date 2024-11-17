@@ -13,7 +13,7 @@ public class ItemRepository implements ItemRepositoryInterface {
 
     @Autowired
     private final ConnectionManager connectionManager;
-    private List<Item> itemList = new ArrayList<>();
+    private final List<Item> itemList = new ArrayList<>();
 
     @Autowired
     public ItemRepository(ConnectionManager connectionManager) {

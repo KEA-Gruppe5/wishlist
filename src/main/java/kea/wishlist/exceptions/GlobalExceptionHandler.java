@@ -19,4 +19,5 @@ public class GlobalExceptionHandler {
 
         return "error";  // Redirect to error.html
     }
+
 }
