@@ -43,19 +43,27 @@ class UserServiceTest {
 
     @BeforeEach
     public void setup() throws SQLException {
+
         MockitoAnnotations.openMocks(this);
+
         user = new User(1, "first name", "last name", "email", 25, "password");
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
+
         verificationToken = new VerificationToken();
         verificationToken.setToken("testToken");
     }
 
-    @DisplayName("Test adding new user in service layer")
+
     @Test
-    void testSaveUser() throws SQLException {
-        // Mock repository behavior and service methods
-        when(verificationService.createToken(any(Integer.class))).thenReturn(verificationToken);
+    void testSaveUser_SendsVerificationEmail() throws SQLException {
+        // Arrange
+        String expectedVerificationLink = "http://example.com/verify?userId=1&token=testToken";
+
+        // Mock dependencies
+        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
         when(userRepository.addUser(any(User.class))).thenReturn(user);
+        when(verificationService.createToken(any(Integer.class))).thenReturn(verificationToken);
+        when(verificationService.createLink(eq(1), eq("testToken"))).thenReturn(expectedVerificationLink);
         doNothing().when(emailService).sendEmail(any(User.class), any(String.class));
 
         // Act
@@ -66,12 +74,12 @@ class UserServiceTest {
         assertEquals("first name", savedUser.getFirstName(), "First names are not equal.");
         assertEquals("encodedPassword", savedUser.getPassword(), "Password is not encoded.");
 
-        // Verify the interactions
+        // Verify interactions
         verify(passwordEncoder, times(1)).encode("password");
         verify(userRepository, times(1)).addUser(user);
-        verify(emailService, times(1)).sendEmail(any(User.class), any(String.class));
-        verify(verificationService, times(1)).createToken(any(Integer.class));
-        logger.info("testSaveUser - " + savedUser);
+        verify(verificationService, times(1)).createToken(eq(1));
+        verify(verificationService, times(1)).createLink(eq(1), eq("testToken"));
+        verify(emailService, times(1)).sendEmail(eq(user), eq(expectedVerificationLink));
     }
 
 }
